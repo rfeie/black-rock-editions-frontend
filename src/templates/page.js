@@ -2,30 +2,29 @@ import React from "react"
 import { graphql } from "gatsby"
 
 import Bio from "../components/bio"
+import Theme from "../components/Theme"
 import Layout from "../components/layout"
 import SEO from "../components/seo"
 import { rhythm } from "../utils/typography"
 
-const PageTemplate = (props) => {
-
-  const post = props.data.wordpressPage;
-  const siteTitle = props.data.site.siteMetadata.title;
+const PageTemplate = props => {
+  const post = props.data.wordpressPage
+  const siteTitle = props.data.site.siteMetadata.title
 
   return (
-    <Layout location={props.location} title={siteTitle}>
-      <SEO
-        title={post.title}
-        description={post.excerpt}
-      />
+    <Theme>
+      <Layout location={props.location} title={siteTitle}>
+        <SEO title={post.title} description={post.excerpt} />
         <h1>{post.title} </h1>
         <div dangerouslySetInnerHTML={{ __html: post.content }} />
         <hr
-        style={{
-          marginBottom: rhythm(1),
-        }}
+          style={{
+            marginBottom: rhythm(1),
+          }}
         />
-      <Bio />
-    </Layout>
+        <Bio />
+      </Layout>
+    </Theme>
   )
 }
 

@@ -6,51 +6,43 @@ import Layout from "../components/layout"
 import SEO from "../components/seo"
 import { rhythm } from "../utils/typography"
 
-const PostTemplate = (props) => {
+const PostTemplate = props => {
+  const post = props.data.wordpressPost
+  const siteTitle = props.data.site.siteMetadata.title
+  let featuredImage = false
 
-  const post = props.data.wordpressPost;
-  const siteTitle = props.data.site.siteMetadata.title;
-  let featuredImage = false;
-
-  if (post.featured_media && post.featured_media.source_url ) {
-    featuredImage = post.featured_media.source_url;
+  if (post.featured_media && post.featured_media.source_url) {
+    featuredImage = post.featured_media.source_url
   }
 
   return (
     <Layout location={props.location} title={siteTitle}>
-      <SEO
-        title={post.title}
-        description={post.excerpt}
-      />
-        <h1>{post.title} </h1>
-        {featuredImage &&
-              <img src={featuredImage} alt={post.title} className="featured-image" />
-        }
-        <div
-          className="post-meta"
-          style={{
-            marginBottom: rhythm(1),
-          }}
-        >
-          <div className="post-date">{post.date}</div>
-          <Link
-            className="cat-link"
-            to={`/category/${post.categories[0].slug}`}
-          >
-            {post.categories[0].name}{' '}
-          </Link>
-        </div>
-
-        <div dangerouslySetInnerHTML={{ __html: post.content }} />
-        <hr
+      <SEO title={post.title} description={post.excerpt} />
+      <h1>{post.title} </h1>
+      {featuredImage && (
+        <img src={featuredImage} alt={post.title} className="featured-image" />
+      )}
+      <div
+        className="post-meta"
         style={{
           marginBottom: rhythm(1),
         }}
-        />
+      >
+        <div className="post-date">{post.date}</div>
+        <Link className="cat-link" to={`/category/${post.categories[0].slug}`}>
+          {post.categories[0].name}{" "}
+        </Link>
+      </div>
+
+      <div dangerouslySetInnerHTML={{ __html: post.content }} />
+      <hr
+        style={{
+          marginBottom: rhythm(1),
+        }}
+      />
       <Bio />
     </Layout>
   )
-
 }
 
 export default PostTemplate
@@ -70,9 +62,7 @@ export const pageQuery = graphql`
       modified
       excerpt
       id
-      featured_media {
-        source_url
-      }
+
       categories {
         name
         slug
@@ -81,3 +71,6 @@ export const pageQuery = graphql`
     }
   }
 `
+// featured_media {
+//   source_url
+// }
