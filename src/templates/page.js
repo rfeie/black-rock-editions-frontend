@@ -11,6 +11,7 @@ const PageTemplate = props => {
   const post = props.data.wordpressPage
   const siteTitle = props.data.site.siteMetadata.title
 
+  console.log("PageTemplate", props)
   return (
     <Theme>
       <Layout location={props.location} title={siteTitle}>
@@ -22,7 +23,6 @@ const PageTemplate = props => {
             marginBottom: rhythm(1),
           }}
         />
-        <Bio />
       </Layout>
     </Theme>
   )
