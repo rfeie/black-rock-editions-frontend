@@ -2,8 +2,6 @@ import React from "react"
 import styled from "styled-components"
 import { getThemeVal } from "../utils/styleUtils"
 
-const newsletterText = `We will keep you updated on print clinics, news and what we are doing.`
-
 const SectionWrapper = styled.section`
   background: rgba(00, 0, 0, 0.95);
   max-width: 80%;
@@ -21,14 +19,13 @@ const SectionWrapper = styled.section`
   color: white;
 `
 
-const SectionContent = styled.div`
-`
+const SectionContent = styled.div``
 
 const SignupButton = styled.button`
-    padding-left: 1.25rem;
-    padding-right: 1.25rem;
-    padding-top: 0.75rem;
-    padding-bottom: 0.75rem;
+  padding-left: 1.25rem;
+  padding-right: 1.25rem;
+  padding-top: 0.75rem;
+  padding-bottom: 0.75rem;
   margin-left: 1em;
   cursor: pointer;
   position: relative;
@@ -106,6 +103,10 @@ const SignupButton = styled.button`
   &:focus span::before {
     transform: translateY(12px);
   }
+  @media (max-width: 650px) {
+    margin-left: 0;
+    margin-top: 1em;
+  }
 `
 
 const NewsletterWrapper = styled.div`
@@ -119,10 +120,13 @@ const NewsletterWrapper = styled.div`
   max-width: 1280px;
   margin-left: auto;
   margin-right: auto;
+  @media (max-width: 650px) {
+    flex-direction: column;
+    align-items: center;
+  }
 `
 
 const TextWrapper = styled.div`
-  width: 0;
   flex: 1 1 0%;
 `
 
@@ -147,6 +151,10 @@ const FormWrapper = styled.div`
 `
 const FormTag = styled.form`
   display: flex;
+  @media (max-width: 650px) {
+    flex-direction: column;
+    align-items: center;
+  }
 `
 
 const ButtonWrapper = styled.div`
@@ -249,18 +257,21 @@ const TextInput = styled.input`
   z-index: 1;
 `
 const Disclaimer = styled.p`
-font-size: 0.875rem;
- a {
-     color: ${getThemeVal('colors.text')};
- }
+  font-size: 0.875rem;
+  a {
+    color: ${getThemeVal("colors.text")};
+  }
 `
 
-const NewsletterContent = () => {
+const NewsletterContent = props => {
+  console.log("NewsletterContent", props)
+  const { headline, sections = {}, content } = props
+  const { input_label, button_label, disclaimer } = sections
   return (
     <NewsletterWrapper>
       <TextWrapper>
-        <TextHeader>Sign up for our newsletter</TextHeader>
-        <TextBody>{newsletterText}</TextBody>
+        <TextHeader>{headline}</TextHeader>
+        <TextBody dangerouslySetInnerHTML={{ __html: content }} />
       </TextWrapper>
       <FormWrapper>
         <FormTag>
@@ -286,30 +297,26 @@ const NewsletterContent = () => {
                 </div>
               </div>
             </InputInnerWrapper>
-            your email
+            {input_label}
           </InputWrapper>
           <ButtonWrapper>
             <SignupButton className="btn btn--border w-full flex items-center justify-center px-5 py-3">
-              Sign up<span></span>
+              {button_label}
+              <span></span>
             </SignupButton>
           </ButtonWrapper>
         </FormTag>
-        <Disclaimer>
-          We care about the protection of your data. Read our {" "}
-          <a href="#" className="text-white font-medium underline">
-            Privacy Policy.
-          </a>
-        </Disclaimer>
+        <Disclaimer dangerouslySetInnerHTML={{ __html: disclaimer }} />
       </FormWrapper>
     </NewsletterWrapper>
   )
 }
 
-const NewsletterSection = () => {
+const NewsletterSection = props => {
   return (
     <SectionWrapper>
       <SectionContent>
-        <NewsletterContent />
+        <NewsletterContent {...props} />
       </SectionContent>
     </SectionWrapper>
   )

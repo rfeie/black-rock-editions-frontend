@@ -33,14 +33,14 @@ module.exports = {
         // Field under which the remote schema will be accessible. You'll use this in your Gatsby query
         fieldName: "wpgraphql",
         // Url to query from
-        url: "http://localhost:5678/graphql",
+        url: "http://blackrockeditions.tech/graphql",
       },
     },
     {
       resolve: "gatsby-source-wordpress",
       options: {
         // The base url to your WP site.
-        baseUrl: "localhost:5678",
+        baseUrl: "blackrockeditions.tech",
         // baseUrl: 'data.justinwhall.com',
         // baseUrl: 'wpgatsby.wtf',
         // WP.com sites set to true, WP.org set to false

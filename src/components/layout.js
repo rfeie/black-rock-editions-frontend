@@ -17,6 +17,7 @@ const Wrapper = styled.section`
 
 const Main = styled.main`
   min-height: calc(100vh - 50px);
+  padding-top: 49px;
 `
 const BkgImg = styled.section`
   position: fixed;

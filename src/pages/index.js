@@ -1,6 +1,6 @@
 import React from "react"
 import { Link, graphql } from "gatsby"
-import get from 'lodash/get'
+import get from "lodash/get"
 import Bio from "../components/bio"
 import Layout from "../components/layout"
 import SEO from "../components/seo"
@@ -85,19 +85,36 @@ const HeroText = styled.section`
   text-align: right;
   text-shadow: 0 5px 15px rgba(0, 0, 0, 0.3), 0 20px 30px rgba(0, 0, 0, 0.4);
   letter-spacing: 0.5px;
+  @media (max-width: 650px) {
+    margin-top: 2em;
+  }
 `
-const getPageInfo = (props) => {
+const getNewsletterInfo = props => {
+  const prefix = "data.allWordpressAcfBlackrockSection.edges[0].node"
   return {
-    headline: get(props, 'data.wordpressPage.acf.headline'),
-    content: get(props, 'data.wordpressPage.content')
-    
+    headline: get(props, `${prefix}.acf.headline`),
+    sections: get(props, `${prefix}.acf.custom_content`, []).reduce(
+      (acc, curr) => {
+        const { content_name, content_value } = curr
+        acc[content_name] = content_value
+        return acc
+      },
+      {}
+    ),
+    content: get(props, `${prefix}.acf.content`),
   }
 }
+const getPageInfo = props => {
+  return {
+    headline: get(props, "data.wordpressPage.acf.headline"),
+    content: get(props, "data.wordpressPage.content"),
+  }
+}
+
 const BlogIndex = props => {
   const { title, postPrefix } = props.data.site.siteMetadata
-  const posts = props.data.allWordpressPost.edges
-  console.log('props.data', props.data)
-  const {headline, content} = getPageInfo(props)
+  console.log("props.data", props.data, getNewsletterInfo(props))
+  const { headline, content } = getPageInfo(props)
   return (
     <Theme>
       <Layout location={props.location} title={title}>
@@ -105,35 +122,10 @@ const BlogIndex = props => {
         <HeroWrapper>
           <HeroContent>
             <HeroHeadline>{headline}</HeroHeadline>
-            <HeroText dangerouslySetInnerHTML={{__html: content}}/>
+            <HeroText dangerouslySetInnerHTML={{ __html: content }} />
           </HeroContent>
         </HeroWrapper>
-        <NewsletterSection />
-        {/* <Bio />
-        {posts.map(({ node }) => {
-          return (
-            <div key={node.slug}>
-              <h3
-                style={{
-                  marginBottom: rhythm(1 / 4),
-                }}
-              >
-                <Link
-                  style={{ boxShadow: `none` }}
-                  to={`${postPrefix}/${node.slug}`}
-                >
-                  {node.title}
-                </Link>
-              </h3>
-              <small>{node.date}</small>
-              <p
-                dangerouslySetInnerHTML={{
-                  __html: node.excerpt,
-                }}
-              />
-            </div>
-          )
-        })} */}
+        <NewsletterSection {...getNewsletterInfo(props)} />
       </Layout>
     </Theme>
   )
@@ -149,26 +141,41 @@ export const pageQuery = graphql`
         postPrefix
       }
     }
-    wordpressPage(path: {eq: "/"}) {
+    wordpressPage(path: { eq: "/" }) {
       id
       acf {
         headline
       }
       content
     }
-  
-    allWordpressPost(filter: { fields: { deploy: { eq: true } } }, limit: 100) {
+
+    allWordpressAcfBlackrockSection(
+      filter: { id: { eq: "d8ae8765-f350-5f5e-82d9-a0b025a2c58f" } }
+    ) {
       edges {
         node {
-          date(formatString: "MMMM DD, YYYY")
-          slug
-          title
-          excerpt
           id
-          categories {
-            name
+          wordpress_id
+          internal {
+            type
+          }
+          acf {
+            content
+            headline
+            custom_content {
+              content_name
+              content_value
+            }
           }
         }
+      }
+    }
+
+    wpgraphql {
+      page(idType: URI, id: "/home") {
+        id
+        uri
+        slug
       }
     }
   }
