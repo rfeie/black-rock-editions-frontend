@@ -274,8 +274,14 @@ const NewsletterContent = props => {
         <TextBody dangerouslySetInnerHTML={{ __html: content }} />
       </TextWrapper>
       <FormWrapper>
-        <FormTag>
+        <FormTag
+          name="newsletter"
+          method="post"
+          data-netlify="true"
+          data-netlify-honeypot="bot-field"
+        >
           <InputWrapper>
+            <input type="hidden" name="form-name" value="newsletter" />
             <InputInnerWrapper>
               <TextInput type="text" placeholder=" " />
               <div className="clip-second-outer">
