@@ -83,7 +83,7 @@ const HeroText = styled.section`
   line-height: 1.75;
   position: relative;
   text-align: right;
-  text-shadow: 0 5px 15px rgba(0, 0, 0, 0.3), 0 20px 30px rgba(0, 0, 0, 0.4);
+  text-shadow: rgba(0, 0, 0, 0.6) 0 5px 15px, rgba(0, 0, 0, 0.6) 0 20px 30px;
   letter-spacing: 0.5px;
   @media (max-width: 650px) {
     margin-top: 2em;
