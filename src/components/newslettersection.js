@@ -256,7 +256,7 @@ const TextInput = styled.input`
   position: relative;
   z-index: 1;
 `
-const Disclaimer = styled.p`
+const Disclaimer = styled.div`
   font-size: 0.875rem;
   a {
     color: ${getThemeVal("colors.text")};
