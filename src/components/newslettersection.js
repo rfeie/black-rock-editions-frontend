@@ -137,7 +137,7 @@ const TextHeader = styled.h2`
   letter-spacing: 1px;
 `
 
-const TextBody = styled.p`
+const TextBody = styled.div`
   font-size: 1.125rem;
   color: #e2e8f0;
   max-width: 48rem;
