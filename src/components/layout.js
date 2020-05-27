@@ -6,8 +6,13 @@ import Footer from "./footer"
 
 import "@wordpress/block-library/build-style/style.css"
 import { rhythm, scale } from "../utils/typography"
-import styled from "styled-components"
+import styled, { createGlobalStyle } from "styled-components"
 
+const GlobalStyle = createGlobalStyle`
+body {
+  font-family: "Inter", sans-serif;
+}
+`
 const Wrapper = styled.section`
   margin-left: auto;
   margin-right: auto;
@@ -16,7 +21,7 @@ const Wrapper = styled.section`
 `
 
 const Main = styled.main`
-  min-height: calc(100vh - 50px);
+  min-height: calc(100vh - 123px);
   padding-top: 49px;
 `
 const BkgImg = styled.section`
@@ -37,9 +42,9 @@ const Layout = props => {
 
   return (
     <Wrapper>
+      <GlobalStyle />
       <Header location={location} title={title} />
       <Main>
-        {" "}
         <BkgImg />
         {children}
         <Footer></Footer>

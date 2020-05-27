@@ -279,11 +279,12 @@ const NewsletterContent = props => {
           method="post"
           data-netlify="true"
           data-netlify-honeypot="bot-field"
+          action="/signup/success"
         >
           <InputWrapper>
             <input type="hidden" name="form-name" value="newsletter" />
             <InputInnerWrapper>
-              <TextInput type="text" placeholder=" " />
+              <TextInput type="email" name="email" id="email" placeholder=" " />
               <div className="clip-second-outer">
                 <div className="fill-second">
                   <div className="fill-second-zigzag1 fill-second-zigzag"></div>
@@ -306,7 +307,10 @@ const NewsletterContent = props => {
             {input_label}
           </InputWrapper>
           <ButtonWrapper>
-            <SignupButton className="btn btn--border w-full flex items-center justify-center px-5 py-3">
+            <SignupButton
+              type="submit"
+              className="btn btn--border w-full flex items-center justify-center px-5 py-3"
+            >
               {button_label}
               <span></span>
             </SignupButton>
