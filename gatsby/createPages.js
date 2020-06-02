@@ -44,6 +44,8 @@ module.exports = async ({ actions, graphql }) => {
     const { generalSettingsUrl } = result.data.wpgraphql.allSettings
     // use url?
     edges.forEach(edge => {
+      console.log("edge\n\nn\n\n\n\n\n\nn", edge)
+
       if (edge.node.fields.deploy) {
         const link = edge.node.link.replace(generalSettingsUrl, "")
         createPage({

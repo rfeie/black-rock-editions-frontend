@@ -1,22 +1,32 @@
 import React from "react"
 import { graphql } from "gatsby"
 
-import Bio from "../components/bio"
 import Theme from "../components/Theme"
 import Layout from "../components/layout"
 import SEO from "../components/seo"
-import { rhythm } from "../utils/typography"
+import styled from "styled-components"
+
+const ContentWrapper = styled.section`
+  position: relative;
+  color: #f5f7fa;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  min-height: calc(100vh - 123px);
+  max-width: 70%;
+  margin: 0 auto;
+`
 
 const PageTemplate = props => {
   const post = props.data.wordpressPage
   const siteTitle = props.data.site.siteMetadata.title
 
-  console.log("PageTemplate", props)
   return (
     <Theme>
       <Layout location={props.location} title={siteTitle}>
         <SEO title={post.title} description={post.excerpt} />
-        <div dangerouslySetInnerHTML={{ __html: post.content }} />
+        <ContentWrapper dangerouslySetInnerHTML={{ __html: post.content }} />
       </Layout>
     </Theme>
   )

@@ -18,15 +18,14 @@ const ContentWrapper = styled.section`
 
 const SignupSuccessPage = props => {
   const siteTitle = props.data.site.siteMetadata.title
-
   return (
     <Theme>
-    <Layout location={props.location} title={siteTitle}>
-      <ContentWrapper>
-        <h1>You Signed up!</h1>
-        <p>Talk to you soon.</p>
-      </ContentWrapper>
-    </Layout>
+      <Layout location={props.location} title={siteTitle}>
+        <ContentWrapper>
+          <h1>You Signed up!</h1>
+          <p>Talk to you soon.</p>
+        </ContentWrapper>
+      </Layout>
     </Theme>
   )
 }

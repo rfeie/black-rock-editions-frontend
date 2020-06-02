@@ -24,7 +24,7 @@ const LogoWrapper = styled.section`
   height: 100%;
   display: flex;
 
-justify-content: space-between;
+  justify-content: space-between;
   svg {
     height: 100%;
   }
@@ -48,7 +48,9 @@ const Header = props => {
   header = (
     <>
       <LogoWrapper>
-        <LogoSvg />
+        <Link to="/">
+          <LogoSvg />
+        </Link>
         <Menu />
       </LogoWrapper>
     </>

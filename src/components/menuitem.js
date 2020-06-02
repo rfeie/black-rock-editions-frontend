@@ -3,13 +3,7 @@ import { CreateLocalLink, isLocal } from "../utils"
 import { Link } from "gatsby"
 import styled from "styled-components"
 import { getThemeVal, bold } from "../utils/styleUtils"
-const keyMaker = () => {
-  let id = 0
-  return () => {
-    id++
-  }
-}
-const getKey = keyMaker()
+import { getKey } from "../utils"
 
 const MenuItemLink = styled(Link)`
   color: ${getThemeVal("colors.text")};

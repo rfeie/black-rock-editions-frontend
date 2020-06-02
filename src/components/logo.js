@@ -1,6 +1,6 @@
 import React from "react"
 import styled from "styled-components"
-import { StaticQuery, graphql } from "gatsby"
+import { StaticQuery, graphql, Link } from "gatsby"
 import Img from "gatsby-image"
 
 const Wrapper = styled.section`
@@ -16,7 +16,7 @@ const query = graphql`
     file(absolutePath: { regex: "/logo.png/" }) {
       childImageSharp {
         fluid(maxWidth: 400) {
-                      ...GatsbyImageSharpFluid
+          ...GatsbyImageSharpFluid
         }
       }
     }
@@ -24,21 +24,21 @@ const query = graphql`
 `
 
 function Logo(props) {
-  console.log(props)
   const data = {}
   return (
     <div>
-      <StaticQuery
-        query={query}
-        render={data => {
-          return (
-            <div
-            >
-              <Img fluid={data.file.childImageSharp.fluid} imgStyle={{}} />
-            </div>
-          )
-        }}
-      />
+      <Link to="/">
+        <StaticQuery
+          query={query}
+          render={data => {
+            return (
+              <div>
+                <Img fluid={data.file.childImageSharp.fluid} imgStyle={{}} />
+              </div>
+            )
+          }}
+        />
+      </Link>
     </div>
   )
 }

@@ -113,7 +113,6 @@ const getPageInfo = props => {
 
 const BlogIndex = props => {
   const { title, postPrefix } = props.data.site.siteMetadata
-  console.log("props.data", props.data, getNewsletterInfo(props))
   const { headline, content } = getPageInfo(props)
   return (
     <Theme>

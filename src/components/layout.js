@@ -1,5 +1,6 @@
 import React from "react"
-import { Link } from "gatsby"
+import { Link, useStaticQuery } from "gatsby"
+import get from "lodash/get"
 import Menu from "./menu"
 import Header from "./header"
 import Footer from "./footer"
@@ -7,6 +8,17 @@ import Footer from "./footer"
 import "@wordpress/block-library/build-style/style.css"
 import { rhythm, scale } from "../utils/typography"
 import styled, { createGlobalStyle } from "styled-components"
+const query = graphql`
+  query BackgroundQuery {
+    file(absolutePath: { regex: "/background.jpg/" }) {
+      childImageSharp {
+        fluid(maxWidth: 1400) {
+          ...GatsbyImageSharpFluid
+        }
+      }
+    }
+  }
+`
 
 const GlobalStyle = createGlobalStyle`
 body {
@@ -30,8 +42,7 @@ const BkgImg = styled.section`
   left: 0;
   width: 100%;
   height: 100%;
-  background: url(https://uploads.codesandbox.io/uploads/user/c1283644-8b77-42b2-bdfe-a50a5ef45af8/338o-stone-background.jpg)
-    0 / cover fixed;
+  background: url(${props => props.backgroundSrc}) 0 / cover fixed;
   // z-index: -1;
   filter: blur(2px);
   transform: scale(1.005);
@@ -39,13 +50,15 @@ const BkgImg = styled.section`
 
 const Layout = props => {
   const { location, title, children } = props
+  const result = get(useStaticQuery(query), "file.childImageSharp.fluid.src")
 
+  console.log("rgf", result)
   return (
     <Wrapper>
       <GlobalStyle />
       <Header location={location} title={title} />
       <Main>
-        <BkgImg />
+        <BkgImg backgroundSrc={result} />
         {children}
         <Footer></Footer>
       </Main>

@@ -12,7 +12,6 @@ export const isLocal = (url, rootUrl) => {
 export const CreateLocalLink = (menuItem, wordPressUrl, blogURI = "blog/") => {
   const { url, connectedObject } = menuItem
 
-  console.log("CreateLocalLink", menuItem, wordPressUrl)
   if (url === "#") {
     return null
   }
@@ -31,3 +30,12 @@ export const CreateLocalLink = (menuItem, wordPressUrl, blogURI = "blog/") => {
 
   return newUri
 }
+
+const keyMaker = () => {
+  let id = 0
+  return () => {
+    id = id + 1
+    return id
+  }
+}
+export const getKey = keyMaker()
