@@ -52,7 +52,6 @@ const Layout = props => {
   const { location, title, children } = props
   const result = get(useStaticQuery(query), "file.childImageSharp.fluid.src")
 
-  console.log("rgf", result)
   return (
     <Wrapper>
       <GlobalStyle />
