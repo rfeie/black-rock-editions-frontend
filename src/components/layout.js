@@ -4,10 +4,11 @@ import get from "lodash/get"
 import Menu from "./menu"
 import Header from "./header"
 import Footer from "./footer"
-
+import BackgroundImage from "./BackgroundImage"
 import "@wordpress/block-library/build-style/style.css"
 import { rhythm, scale } from "../utils/typography"
 import styled, { createGlobalStyle } from "styled-components"
+
 const query = graphql`
   query BackgroundQuery {
     file(absolutePath: { regex: "/background.jpg/" }) {
@@ -36,17 +37,6 @@ const Main = styled.main`
   min-height: calc(100vh - 123px);
   padding-top: 49px;
 `
-const BkgImg = styled.section`
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: url(${props => props.backgroundSrc}) 0 / cover fixed;
-  // z-index: -1;
-  filter: blur(2px);
-  transform: scale(1.005);
-`
 
 const Layout = props => {
   const { location, title, children } = props
@@ -57,7 +47,7 @@ const Layout = props => {
       <GlobalStyle />
       <Header location={location} title={title} />
       <Main>
-        <BkgImg backgroundSrc={result} />
+        <BackgroundImage backgroundSrc={result} />
         {children}
         <Footer></Footer>
       </Main>

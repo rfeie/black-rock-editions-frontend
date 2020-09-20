@@ -45,23 +45,6 @@ const HeroContent = styled.section`
   z-index: 2;
   position: relative;
 `
-const HeroContentShadowOne = styled.section`
-  ${sharedContentStyles}
-  position: fixed;
-  mix-blend-mode: soft-light;
-  margin: -20% 0 0 -20%;
-  opacity: 0.75;
-  filter: blur(2px);
-`
-const HeroContentShadowTwo = styled.section`
-  ${sharedContentStyles}
-  position: fixed;
-  mix-blend-mode: color-burn;
-  margin: 20% 0 0 43%;
-  filter: blur(2px);
-  mix-blend-mode: color-burn;
-`
-
 const HeroHeadline = styled.section`
   font-size: 5em;
   grid-area: header;
