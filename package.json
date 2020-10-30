@@ -15,6 +15,7 @@
   "scripts": {
     "develop": "gatsby develop",
     "build": "gatsby build",
+    "clean": "gatsby clean",
     "format": "prettier --write src/**/*.{js,jsx}",
     "start": "npm run develop",
     "serve": "gatsby serve"
@@ -43,7 +44,7 @@
     "gatsby-source-wordpress": "^3.0.64",
     "gatsby-transformer-remark": "^2.3.12",
     "gatsby-transformer-sharp": "^2.1.21",
-    "lodash": "^4.17.11",
+    "lodash": "^4.17.20",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
     "react-helmet": "^5.2.1",

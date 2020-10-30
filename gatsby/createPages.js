@@ -1,4 +1,7 @@
 const path = require(`path`)
+const { associatedLayouts } = require(`./constants`)
+
+const get = require("lodash/get")
 
 /**
  * Create WordPress Posts
@@ -24,6 +27,14 @@ module.exports = async ({ actions, graphql }) => {
                 deploy
               }
               link
+              acf {
+                associated_layout
+                enable
+                additional_layout {
+                  additional_values_value
+                  key_value
+                }
+              }
             }
           }
         }
@@ -34,7 +45,7 @@ module.exports = async ({ actions, graphql }) => {
         }
       }
     `
-  ).then(result => {
+  ).then(async result => {
     if (result.errors) {
       throw result.errors
     }
@@ -44,13 +55,28 @@ module.exports = async ({ actions, graphql }) => {
     const { generalSettingsUrl } = result.data.wpgraphql.allSettings
     // use url?
     edges.forEach(edge => {
-      console.log("edge\n\nn\n\n\n\n\n\nn", edge)
-
+      // console.log("edge\n\nn\n\n\n\n\n\nn", edge)
+      let component = postTemplate
       if (edge.node.fields.deploy) {
+        const { enable, associated_layout = {} } = get(edge, "node.acf") || {}
         const link = edge.node.link.replace(generalSettingsUrl, "")
+        console.log(
+          "edge\n\nn\n\n\n\n\n\nn",
+          edge,
+          get(edge, "node.acf"),
+          !!enable,
+          associatedLayouts[associated_layout]
+            ? associatedLayouts[associated_layout]
+            : component
+        )
+        if (!!enable) {
+          component = associatedLayouts[associated_layout]
+            ? associatedLayouts[associated_layout]
+            : component
+        }
         createPage({
           path: `${pagePrefix}${link}`,
-          component: postTemplate,
+          component,
           context: {
             id: edge.node.id,
           },

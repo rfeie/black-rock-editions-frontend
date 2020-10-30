@@ -13,20 +13,35 @@ const ContentWrapper = styled.section`
   justify-content: center;
   align-items: center;
   flex-direction: column;
-  min-height: calc(100vh - 123px);
+  min-height: calc(100vh - 150px);
   max-width: 70%;
   margin: 0 auto;
 `
 
+const FeaturedImage = ({ src }) => {
+  return (
+    <section>
+      <img src={src} />
+    </section>
+  )
+}
 const PageTemplate = props => {
   const post = props.data.wordpressPage
+  const featuredImage = post.featured_media
+    ? post.featured_media.source_url
+    : null
   const siteTitle = props.data.site.siteMetadata.title
 
   return (
     <Theme>
       <Layout location={props.location} title={siteTitle}>
         <SEO title={post.title} description={post.excerpt} />
-        <ContentWrapper dangerouslySetInnerHTML={{ __html: post.content }} />
+        <ContentWrapper>
+          {featuredImage ? <FeaturedImage src={featuredImage} /> : null}
+          <h1>{post.title}</h1>
+
+          <section dangerouslySetInnerHTML={{ __html: post.content }}></section>
+        </ContentWrapper>
       </Layout>
     </Theme>
   )
@@ -46,9 +61,9 @@ export const pageQuery = graphql`
       slug
       title
       id
-      # featured_media {
-      #   source_url
-      # }
+      featured_media {
+        source_url
+      }
       content
     }
   }

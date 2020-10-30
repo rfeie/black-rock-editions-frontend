@@ -1,5 +1,5 @@
 import React from "react"
-import { Link, graphql } from "gatsby"
+import { Link, graphql, useStaticQuery } from "gatsby"
 import get from "lodash/get"
 import Layout from "../components/layout"
 import SEO from "../components/seo"
@@ -7,6 +7,8 @@ import Theme from "../components/Theme"
 import { rhythm } from "../utils/typography"
 import styled from "styled-components"
 import NewsletterSection from "../components/newslettersection"
+import BackgroundImage from "../components/BackgroundImage"
+
 const sharedContentStyles = `
   display: grid;
   grid-template-areas: "header ." ". copy";
@@ -96,9 +98,13 @@ const getPageInfo = props => {
 const BlogIndex = props => {
   const { title, postPrefix } = props.data.site.siteMetadata
   const { headline, content } = getPageInfo(props)
+  const result = get(props.data, "file.childImageSharp.fluid.src")
+
   return (
     <Theme>
       <Layout location={props.location} title={title}>
+        <BackgroundImage backgroundSrc={result} />
+
         <SEO title="All posts" />
         <HeroWrapper>
           <HeroContent>
@@ -128,6 +134,13 @@ export const pageQuery = graphql`
         headline
       }
       content
+    }
+    file(absolutePath: { regex: "/background.jpg/" }) {
+      childImageSharp {
+        fluid(maxWidth: 1400) {
+          ...GatsbyImageSharpFluid
+        }
+      }
     }
 
     allWordpressAcfBlackrockSection(

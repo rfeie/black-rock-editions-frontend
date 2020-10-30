@@ -28,7 +28,7 @@ const MENU_QUERY = graphql`
       }
     }
     wpgraphql {
-      menus(where: { location: PRIMARY }) {
+      menus(where: { location: EXPANDED }) {
         edges {
           node {
             id

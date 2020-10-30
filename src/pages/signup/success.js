@@ -11,7 +11,7 @@ const ContentWrapper = styled.section`
   justify-content: center;
   align-items: center;
   flex-direction: column;
-  min-height: calc(100vh - 123px);
+  min-height: calc(100vh - 150px);
   max-width: 70%;
   margin: 0 auto;
 `

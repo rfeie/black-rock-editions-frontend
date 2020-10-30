@@ -1,0 +1,38 @@
+query MyQuery {
+  allWordpressAcfWork(filter: {acf: {artist: {elemMatch: {wordpress_id: {eq: 42}}}}}) {
+    edges {
+      node {
+        id
+        acf {
+          dimensions
+          edition
+          image
+          medium
+          name
+          year
+        }
+      }
+    }
+  }
+  allWordpressAcfArtist {
+    edges {
+      node {
+        id
+        wordpress_id
+        acf {
+          name
+        }
+        fields {
+          deploy
+        }
+      }
+    }
+  }
+  wordpressWpArtist(wordpress_id: {eq: 42}) {
+    id
+    acf {
+      name
+    }
+    content
+  }
+}

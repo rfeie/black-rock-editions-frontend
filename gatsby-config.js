@@ -3,7 +3,7 @@ module.exports = {
     title: "Black Rock Editions",
     author: `Black Rock Editions`,
     description: `The website for the art printing company Black Rock Editions`,
-    siteUrl: `https://gatsby-wordpress-netlify-production.netlify.com`,
+    siteUrl: `http://blackrockeditions.tech/`,
     social: {
       twitter: `blackrockeditions`,
     },
@@ -59,8 +59,8 @@ module.exports = {
       resolve: "gatsby-plugin-web-font-loader",
       options: {
         custom: {
-          families: ["Inter"],
-          urls: ["/fonts/inter.css"],
+          families: ["Inter", "EB Garamond"],
+          urls: ["/fonts/inter.css", "/fonts/garamond.css"],
         },
       },
     },

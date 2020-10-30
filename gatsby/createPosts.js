@@ -42,7 +42,7 @@ module.exports = async ({ actions, graphql }) => {
 
     edges.forEach(edge => {
       if (edge.node.fields.deploy) {
-        console.log("\n\n\n\nEDGE post, ", JSON.stringify(edge, null, 2))
+        // console.log("\n\n\n\nEDGE post, ", JSON.stringify(edge, null, 2))
 
         createPage({
           path: `${postPrefix}/${edge.node.slug}`,
