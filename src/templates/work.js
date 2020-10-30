@@ -1,5 +1,6 @@
 import React, { useState } from "react"
 import { graphql, Link, navigate } from "gatsby"
+import Img from "gatsby-image"
 
 import Theme from "../components/Theme"
 import Layout from "../components/layout"
@@ -102,6 +103,8 @@ const PageTemplate = props => {
     title,
     acf: { dimensions, edition, image, medium, name, year },
   } = work
+
+  console.log("image", props.data)
   return (
     <Theme>
       <Layout location={props.location} title={siteTitle}>
@@ -135,7 +138,8 @@ const PageTemplate = props => {
             ></section>
           </Work>
           <WorksImageWrapper>
-            <img src={image[0]} />
+            {/* <img src={image[0]} /> */}
+            <Img fluid={work.acf.image.localFile.childImageSharp.fluid} />
           </WorksImageWrapper>
         </ContentWrapper>
       </Layout>
@@ -172,7 +176,16 @@ export const pageQuery = graphql`
       acf {
         dimensions
         edition
-        image
+
+        image {
+          localFile {
+            childImageSharp {
+              fluid(maxWidth: 1400) {
+                ...GatsbyImageSharpFluid_withWebp
+              }
+            }
+          }
+        }
         medium
         name
         year

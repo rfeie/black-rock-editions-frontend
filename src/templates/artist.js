@@ -1,5 +1,6 @@
 import React from "react"
 import { graphql, Link } from "gatsby"
+import Img from "gatsby-image"
 
 import Theme from "../components/Theme"
 import Layout from "../components/layout"
@@ -54,6 +55,9 @@ const WorksImageWrapper = styled.div`
     width: 100%;
     margin-bottom: 1em;
   }
+  a {
+    width: 100%;
+  }
 `
 const Work = styled.section`
   display: flex;
@@ -106,7 +110,6 @@ const PageTemplate = props => {
     ? post.featured_media.source_url
     : null
   const siteTitle = props.data.site.siteMetadata.title
-
   return (
     <Theme>
       <Layout location={props.location} title={siteTitle}>
@@ -129,11 +132,12 @@ const PageTemplate = props => {
                 year,
               } = work.node.acf
               const { path, id } = work.node
+              console.log("work", image)
               return (
                 <Work key={id}>
                   <WorksImageWrapper>
                     <Link to={path}>
-                      <img src={image[0]} />
+                      <Img fluid={image.localFile.childImageSharp.fluid} />
                     </Link>
                   </WorksImageWrapper>
 
@@ -186,7 +190,16 @@ export const pageQuery = graphql`
           acf {
             dimensions
             edition
-            image
+
+            image {
+              localFile {
+                childImageSharp {
+                  fluid(maxWidth: 800) {
+                    ...GatsbyImageSharpFluid_withWebp
+                  }
+                }
+              }
+            }
             medium
             name
             year

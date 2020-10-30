@@ -1,6 +1,7 @@
 import React from "react"
 import { graphql, Link } from "gatsby"
 import get from "lodash/get"
+import Img from "gatsby-image"
 import Theme from "../components/Theme"
 import Layout from "../components/layout"
 import SEO from "../components/seo"
@@ -72,6 +73,9 @@ const ArtistSection = styled.section`
     height: 100%;
     position: relative;
     overflow: hidden;
+    a {
+      width: 100%;
+    }
     img {
       object-fit: contain;
       height: 100%;
@@ -111,7 +115,7 @@ const PageTemplate = props => {
         path,
         title,
         id,
-        image: source_url,
+        image: preview_image,
         excerpt: preview_text,
       }
     }
@@ -146,7 +150,7 @@ const PageTemplate = props => {
                   {image ? (
                     <div className="image-section">
                       <Link to={path}>
-                        <img src={image} />
+                        <Img fluid={image.localFile.childImageSharp.fluid} />
                       </Link>
                     </div>
                   ) : null}
@@ -194,10 +198,15 @@ export const pageQuery = graphql`
           acf {
             name
             preview_text
+
             preview_image {
-              title
-              alt_text
-              source_url
+              localFile {
+                childImageSharp {
+                  fluid(maxWidth: 1400) {
+                    ...GatsbyImageSharpFluid_withWebp
+                  }
+                }
+              }
             }
           }
           wordpress_id
