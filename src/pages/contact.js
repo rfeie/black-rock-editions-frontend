@@ -207,9 +207,7 @@ const Form = props => {
     >
       <FormWrapper>
         <div>
-          <HeadlineText>
-            {headline} | {formStatus}, {errors.join(" | ")}
-          </HeadlineText>
+          <HeadlineText>{headline}</HeadlineText>
           <SubheadText dangerouslySetInnerHTML={{ __html: content }} />
         </div>
         <FieldInputsArea>
