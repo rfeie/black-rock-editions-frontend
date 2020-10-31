@@ -1,6 +1,7 @@
 import React from "react"
 import { graphql, Link } from "gatsby"
 import Img from "gatsby-image"
+import FeaturedImage from "../components/FeaturedImage"
 
 import Theme from "../components/Theme"
 import Layout from "../components/layout"
@@ -94,21 +95,11 @@ const WordpressContent = styled.section`
   max-width: 900px;
 `
 
-const FeaturedImage = ({ src }) => {
-  return (
-    <section>
-      <img src={src} />
-    </section>
-  )
-}
-
 const PageTemplate = props => {
   const post = props.data.wordpressWpArtist
   const works = props.data.allWordpressWpWork.edges
   const content = post.content
-  const featuredImage = post.featured_media
-    ? post.featured_media.source_url
-    : null
+  const featuredImage = post.featured_media ? post.featured_media : null
   const siteTitle = props.data.site.siteMetadata.title
   return (
     <Theme>
@@ -116,7 +107,7 @@ const PageTemplate = props => {
         <SEO title={post.title} description={post.excerpt} />
         <ContentWrapper>
           <ArtistMainContainer>
-            {featuredImage ? <FeaturedImage src={featuredImage} /> : null}
+            {featuredImage ? <FeaturedImage image={featuredImage} /> : null}
             <PageTitle>{post.title}</PageTitle>
             <WordpressContent dangerouslySetInnerHTML={{ __html: content }} />
           </ArtistMainContainer>
@@ -176,9 +167,15 @@ export const pageQuery = graphql`
       }
       content
       title
-      #    featured_media {
-      #       source_url
-      #      }
+      featured_media {
+        localFile {
+          childImageSharp {
+            fluid(maxWidth: 1400) {
+              ...GatsbyImageSharpFluid_withWebp
+            }
+          }
+        }
+      }
     }
     allWordpressWpWork(
       filter: { acf: { artist: { elemMatch: { wordpress_id: { eq: $id } } } } }

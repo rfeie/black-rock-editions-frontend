@@ -3,6 +3,7 @@ import { graphql } from "gatsby"
 
 import Theme from "../components/Theme"
 import Layout from "../components/layout"
+import FeaturedImage from "../components/FeaturedImage"
 import SEO from "../components/seo"
 import styled from "styled-components"
 
@@ -18,18 +19,20 @@ const ContentWrapper = styled.section`
   margin: 0 auto;
 `
 
-const FeaturedImage = ({ src }) => {
-  return (
-    <section>
-      <img src={src} />
-    </section>
-  )
+const PageTitle = styled.h1`
+font-family: 'EB Garamond';
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    font-weight: 200;
+    font-size: 2em;
+    line-height: 1;
+    margin-bottom: .25em;
 }
+`
+
 const PageTemplate = props => {
   const post = props.data.wordpressPage
-  const featuredImage = post.featured_media
-    ? post.featured_media.source_url
-    : null
+  const featuredImage = post.featured_media ? post.featured_media : null
   const siteTitle = props.data.site.siteMetadata.title
 
   return (
@@ -37,8 +40,8 @@ const PageTemplate = props => {
       <Layout location={props.location} title={siteTitle}>
         <SEO title={post.title} description={post.excerpt} />
         <ContentWrapper>
-          {featuredImage ? <FeaturedImage src={featuredImage} /> : null}
-          <h1>{post.title}</h1>
+          {featuredImage ? <FeaturedImage image={featuredImage} /> : null}
+          <PageTitle>{post.title}</PageTitle>
 
           <section dangerouslySetInnerHTML={{ __html: post.content }}></section>
         </ContentWrapper>
@@ -62,7 +65,13 @@ export const pageQuery = graphql`
       title
       id
       featured_media {
-        source_url
+        localFile {
+          childImageSharp {
+            fluid(maxWidth: 1400) {
+              ...GatsbyImageSharpFluid_withWebp
+            }
+          }
+        }
       }
       content
     }

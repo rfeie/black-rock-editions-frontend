@@ -2,6 +2,7 @@ import React from "react"
 import { Link, graphql } from "gatsby"
 import Layout from "../components/layout"
 import SEO from "../components/seo"
+import FeaturedImage from "../components/FeaturedImage"
 import { rhythm } from "../utils/typography"
 import Theme from "../components/Theme"
 import styled from "styled-components"
@@ -63,8 +64,8 @@ const PostTemplate = props => {
   const siteTitle = props.data.site.siteMetadata.title
   let featuredImage = false
 
-  if (post.featured_media && post.featured_media.source_url) {
-    featuredImage = post.featured_media.source_url
+  if (post.featured_media && post.featured_media) {
+    featuredImage = post.featured_media
   }
 
   return (
@@ -73,13 +74,8 @@ const PostTemplate = props => {
         <SEO title={post.title} description={post.excerpt} />
         <ContentWrapper>
           <PageTitle>{post.title} </PageTitle>
-          {featuredImage && (
-            <img
-              src={featuredImage}
-              alt={post.title}
-              className="featured-image"
-            />
-          )}
+          {featuredImage ? <FeaturedImage image={featuredImage} /> : null}
+
           <div
             className="post-meta"
             style={{
