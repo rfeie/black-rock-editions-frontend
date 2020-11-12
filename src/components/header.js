@@ -32,7 +32,6 @@ const LogoWrapper = styled.section`
 const HeaderContent = styled.header`
   ${sharedStyles}
   background: black;
-  mix-blend-mode: multiply;
 `
 
 const HeaderBkg = styled.div`

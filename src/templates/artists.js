@@ -15,18 +15,23 @@ const ContentWrapper = styled.section`
   align-items: center;
   flex-direction: column;
   min-height: calc(100vh - 150px);
-  max-width: 70%;
-  margin: 0 auto;
+
+  max-width: 100%;
+  padding: 0 1rem;
+  @media (min-width: 1024px) {
+    max-width: 80%;
+    margin: 0 auto;
+  }
 `
 
 const PageTitle = styled.h1`
-font-family: 'EB Garamond';
+    font-family: 'Inter', sans-serif;
     letter-spacing: 6px;
     text-transform: uppercase;
-    font-weight: 200;
+    font-weight: 600;
     font-size: 5em;
-    line-height: .5;
-}
+    line-height: .575;
+  }
 `
 
 const ArtistName = styled.h2`
@@ -39,25 +44,21 @@ font-family: 'EB Garamond';
 const AllArtistSection = styled.section`
   width: 100%;
   display: grid;
-  grid-template-columns: 1fr 1fr;
   grid-auto-rows: minmax(400px, min-content);
+  grid-template-columns: 1fr;
+  @media (min-width: 1024px) {
+    grid-template-columns: 1fr 1fr;
+  }
   column-gap: 10px;
   row-gap: 15px;
 `
 
 const ArtistSection = styled.section`
-  padding: 10px;
+  padding: 10px 4rem;
   display: flex;
   margin-right: 10px;
-
-  &:nth-child(2n) {
-    border-left: 1px solid white;
-    padding-left: 20px;
-    margin-right: 0px;
-  }
-  & > * {
-    flex: 1;
-  }
+  flex-direction: column;
+  width: 100%;
   a {
     text-decoration: none;
   }
@@ -69,10 +70,11 @@ const ArtistSection = styled.section`
   &.excerpt_image {
   }
   .image-section {
-    width: 40%;
+    width: 100%;
     height: 100%;
     position: relative;
     overflow: hidden;
+    padding: 0 2em;
     a {
       width: 100%;
     }
@@ -83,8 +85,28 @@ const ArtistSection = styled.section`
     }
   }
   .excerpt {
-    font-size: 14px;
+    font-size: 16px;
     padding-right: 5px;
+    font-weight: 300;
+    margin-bottom: 1.45rem;
+  }
+
+  @media (min-width: 1024px) {
+    padding: 10px;
+    flex-direction: row;
+    & > * {
+      flex: 1;
+    }
+    .image-section {
+      padding: 0;
+      width: 40%;
+    }
+
+    &:nth-child(2n) {
+      border-left: 1px solid white;
+      padding-left: 20px;
+      margin-right: 0px;
+    }
   }
 `
 
