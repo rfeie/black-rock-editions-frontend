@@ -55,7 +55,7 @@ const PostTitle = styled.h3`
 const CategoryTemplate = props => {
   const { title, postPrefix } = props.data.site.siteMetadata
   const posts = props.data.allWordpressPost.edges
-
+  // test
   return (
     <Theme>
       <Layout location={props.location} title={title}>
