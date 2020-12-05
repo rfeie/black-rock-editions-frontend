@@ -19,7 +19,6 @@ const ContentWrapper = styled.section`
 
 const HeadlineText = styled.h1`
   color: white;
-  line-height: 1.5rem;
   font-size: 1.125rem;
   font-family: "EB Garamond";
   letter-spacing: 4px;
@@ -271,6 +270,10 @@ const Form = props => {
   )
 }
 
+const Divider = styled.hr`
+  width: 100%;
+  border-bottom: 1px solid darkgray;
+`
 const validateFormData = formState => {
   let state = VALID
   const errors = []
@@ -313,54 +316,87 @@ const validateFormData = formState => {
 const getContactText = props => {
   const textlabelDefaults = [
     {
-      additional_values_value: "Name",
-      key_value: "name_label",
+      additionalValuesValue: "Name",
+      keyValue: "name_label",
     },
     {
-      additional_values_value: "Submit",
-      key_value: "submit_text",
+      additionalValuesValue: "Submit",
+      keyValue: "submit_text",
     },
     {
-      additional_values_value: "Email",
-      key_value: "email_label",
+      additionalValuesValue: "Email",
+      keyValue: "email_label",
     },
     {
-      additional_values_value: "Subject",
-      key_value: "subject_label",
+      additionalValuesValue: "Subject",
+      keyValue: "subject_label",
     },
     {
-      additional_values_value: "What did you want to say?",
-      key_value: "subject_placeholder",
+      additionalValuesValue: "What did you want to say?",
+      keyValue: "subject_placeholder",
     },
     {
-      additional_values_value: "About",
-      key_value: "message_label",
+      additionalValuesValue: "About",
+      keyValue: "message_label",
     },
   ]
-  const page = props.data.wordpressPage
+  const { page } = props.data.wpgraphql
   const locationState = props.location.state || {}
-  const { headline = "Contact", additional_layout = [] } = page.acf
+  const {
+    custom_content: { headline = "Contact" },
+    custom_page_layouts: { additionalLayout = [] },
+  } = page
+
+  // custom_page_layouts {
+  //   additionalLayout {
+  //     additionalValuesValue
+  //     fieldGroupName
+  //     keyValue
+  //   }
+  // }
+  // custom_content {
+  //   headline
+  // }
+
+  const fieldData = textlabelDefaults.reduce((acc, defaultData) => {
+    const { additionalValuesValue, keyValue } = defaultData
+    const suppliedData = additionalLayout.find(
+      record => record.keyValue === keyValue
+    )
+    if (suppliedData) {
+      acc[keyValue] = suppliedData.additionalValuesValue
+    } else {
+      acc[keyValue] = additionalValuesValue
+    }
+    return acc
+  }, {})
   return {
     headline,
     content: page.content || "",
     message: locationState.messageText || "",
     subject: locationState.subjectText || "",
-    fieldData: textlabelDefaults.reduce((acc, defaultData) => {
-      const { additional_values_value, key_value } = defaultData
-      const suppliedData = additional_layout.find(
-        record => record.key_value === key_value
-      )
-      if (suppliedData) {
-        acc[key_value] = suppliedData.additional_values_value
-      } else {
-        acc[key_value] = additional_values_value
+    fieldData,
+    ...additionalLayout.reduce((acc, data) => {
+      const { additionalValuesValue, keyValue } = data
+      if (!fieldData[keyValue]) {
+        acc[keyValue] = additionalValuesValue
       }
       return acc
     }, {}),
   }
 }
+
+const LocationInformation = ({ location_info_header, address }) => {
+  return (
+    <section>
+      <HeadlineText>{location_info_header}</HeadlineText>
+
+      <section>{address}</section>
+    </section>
+  )
+}
 const ContactPage = props => {
-  const page = props.data.wordpressPage
+  const { page } = props.data.wpgraphql
   const title = page.title
 
   const formText = getContactText(props)
@@ -396,6 +432,8 @@ const ContactPage = props => {
             }}
             onSubmit={onSubmit}
           />
+          <Divider />
+          <LocationInformation {...formText} />
         </ContentWrapper>
       </Layout>
     </Theme>
@@ -412,17 +450,40 @@ export const pageQuery = graphql`
         postPrefix
       }
     }
-    wordpressPage(slug: { eq: "contact" }) {
-      id
-      title
-      acf {
-        headline
-        additional_layout {
-          additional_values_value
-          key_value
+    wpgraphql {
+      page(id: "/contact", idType: URI) {
+        id
+        title
+        content
+        custom_page_layouts {
+          additionalLayout {
+            additionalValuesValue
+            fieldGroupName
+            keyValue
+          }
+        }
+        custom_content {
+          headline
         }
       }
-      content
+    }
+    allWordpressWpBlackrockSection(
+      filter: { slug: { in: ["contact-information"] } }
+    ) {
+      edges {
+        node {
+          id
+          slug
+          acf {
+            custom_content {
+              content_name
+              content_value
+            }
+            content
+            headline
+          }
+        }
+      }
     }
   }
 `

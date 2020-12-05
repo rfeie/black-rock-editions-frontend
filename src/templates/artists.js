@@ -25,13 +25,12 @@ const ContentWrapper = styled.section`
 `
 
 const PageTitle = styled.h1`
-    font-family: 'Inter', sans-serif;
-    letter-spacing: 6px;
-    text-transform: uppercase;
-    font-weight: 600;
-    font-size: 5em;
-    line-height: .575;
-  }
+  font-family: "Inter", sans-serif;
+  letter-spacing: 6px;
+  text-transform: uppercase;
+  font-weight: 600;
+  font-size: 5em;
+  line-height: 0.575;
 `
 
 const ArtistName = styled.h2`
@@ -218,7 +217,6 @@ export const pageQuery = graphql`
             deploy
           }
           acf {
-            name
             preview_text
 
             preview_image {

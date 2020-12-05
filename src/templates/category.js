@@ -15,13 +15,14 @@ const ContentWrapper = styled.section`
   margin-top: 2em;
 `
 const PageTitle = styled.h1`
-font-family: 'EB Garamond';
     letter-spacing: 4px;
-    text-transform: uppercase;
-    font-weight: 200;
     font-size: 2em;
     line-height: 1;
     margin-bottom: .25em;
+    font-family: 'Inter', sans-serif;
+    letter-spacing: 6px;
+    text-transform: uppercase;
+    font-weight: 600;
 }
 `
 

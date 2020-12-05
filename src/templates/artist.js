@@ -125,14 +125,7 @@ const PageTemplate = props => {
 
           <WorksContainer>
             {works.map(work => {
-              const {
-                dimensions,
-                edition,
-                image,
-                medium,
-                name,
-                year,
-              } = work.node.acf
+              const { dimensions, edition, image, medium, year } = work.node.acf
               const { path, id } = work.node
               console.log("work", image)
               return (
@@ -144,7 +137,7 @@ const PageTemplate = props => {
                   </WorksImageWrapper>
 
                   <section>
-                    <WorkTitle>{name}</WorkTitle>
+                    <WorkTitle>{work.title}</WorkTitle>
                     <section className="work-year">
                       {year} | {medium} | {dimensions} | {edition}
                     </section>
@@ -163,7 +156,7 @@ const PageTemplate = props => {
 export default PageTemplate
 
 export const pageQuery = graphql`
-  query ArtistByID($id: Int!) {
+  query ArtistByID($id: Int!, $works: [Int]) {
     site {
       siteMetadata {
         title
@@ -173,9 +166,7 @@ export const pageQuery = graphql`
 
     wordpressWpArtist(wordpress_id: { eq: $id }) {
       id
-      acf {
-        name
-      }
+
       content
       title
       featured_media {
@@ -188,9 +179,7 @@ export const pageQuery = graphql`
         }
       }
     }
-    allWordpressWpWork(
-      filter: { acf: { artist: { elemMatch: { wordpress_id: { eq: $id } } } } }
-    ) {
+    allWordpressWpWork(filter: { wordpress_id: { in: $works } }) {
       edges {
         node {
           id
@@ -209,7 +198,6 @@ export const pageQuery = graphql`
               }
             }
             medium
-            name
             year
           }
         }

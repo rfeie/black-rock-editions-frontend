@@ -30,10 +30,6 @@ module.exports = async ({ actions, graphql }) => {
               acf {
                 associated_layout
                 enable
-                additional_layout {
-                  additional_values_value
-                  key_value
-                }
               }
             }
           }

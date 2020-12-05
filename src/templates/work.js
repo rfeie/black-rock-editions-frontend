@@ -101,7 +101,7 @@ const PageTemplate = props => {
   const siteTitle = props.data.site.siteMetadata.title
   const {
     title,
-    acf: { dimensions, edition, image, medium, name, year },
+    acf: { dimensions, edition, image, medium, year },
   } = work
 
   console.log("image", props.data)
@@ -160,9 +160,6 @@ export const pageQuery = graphql`
 
     wordpressWpArtist(wordpress_id: { eq: $artistId }) {
       id
-      acf {
-        name
-      }
       content
       path
       title
@@ -187,7 +184,6 @@ export const pageQuery = graphql`
           }
         }
         medium
-        name
         year
       }
     }
