@@ -18,6 +18,8 @@ module.exports = {
         name: `assets`,
       },
     },
+    `gatsby-plugin-react-leaflet`,
+
     {
       resolve: "gatsby-source-graphql",
       options: {

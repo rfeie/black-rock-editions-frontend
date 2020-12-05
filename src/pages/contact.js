@@ -4,6 +4,8 @@ import Theme from "../components/Theme"
 import Layout from "../components/layout"
 import SEO from "../components/seo"
 import { SignupButton } from "../components/newsletterform"
+import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet"
+
 import styled from "styled-components"
 const VALID = "valid"
 const INVALID = "invalid"
@@ -131,6 +133,36 @@ const TextArea = styled.textarea`
   margin: 0;
   ${inputCss}
 `
+
+const LeafletWrapper = styled.section`
+  height: 400px;
+  margin: 2em 0;
+  position: relative;
+  z-index: 0;
+  & > * {
+    width: 100%;
+    max-width: 1000px;
+    height: 400px;
+  }
+`
+const LeafletMap = () => {
+  const position = [35.6628, -105.99537]
+  return (
+    <LeafletWrapper>
+      <MapContainer center={position} zoom={13} scrollWheelZoom={false}>
+        <TileLayer
+          attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+          url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+        />
+        <Marker position={position}>
+          {/* <Popup>
+            A pretty CSS3 popup. <br /> Easily customizable.
+          </Popup> */}
+        </Marker>
+      </MapContainer>
+    </LeafletWrapper>
+  )
+}
 
 const ButtonWrapper = styled.span`
   box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
@@ -392,6 +424,7 @@ const LocationInformation = ({ location_info_header, address }) => {
       <HeadlineText>{location_info_header}</HeadlineText>
 
       <section>{address}</section>
+      <LeafletMap />
     </section>
   )
 }
