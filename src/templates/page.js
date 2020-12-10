@@ -31,8 +31,8 @@ font-family: 'EB Garamond';
 `
 
 const PageTemplate = props => {
-  const post = props.data.wordpressPage
-  const featuredImage = post.featured_media ? post.featured_media : null
+  const post = props.data.wpPage
+  const featuredImage = post.featuredImage ? post.featuredImage.node : null
   const siteTitle = props.data.site.siteMetadata.title
 
   return (
@@ -60,19 +60,22 @@ export const pageQuery = graphql`
         author
       }
     }
-    wordpressPage(id: { eq: $id }) {
+    wpPage(id: { eq: $id }) {
       slug
       title
       id
-      featured_media {
-        localFile {
-          childImageSharp {
-            fluid(maxWidth: 1400) {
-              ...GatsbyImageSharpFluid_withWebp
+      featuredImage {
+        node {
+          localFile {
+            childImageSharp {
+              fluid(maxWidth: 1400) {
+                ...GatsbyImageSharpFluid_withWebp
+              }
             }
           }
         }
       }
+
       content
     }
   }

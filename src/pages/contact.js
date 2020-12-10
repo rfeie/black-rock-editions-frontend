@@ -372,7 +372,7 @@ const getContactText = props => {
       keyValue: "message_label",
     },
   ]
-  const { page } = props.data.wpgraphql
+  const page = props.data.wpPage
   const locationState = props.location.state || {}
   const {
     custom_content: { headline = "Contact" },
@@ -429,7 +429,7 @@ const LocationInformation = ({ location_info_header, address }) => {
   )
 }
 const ContactPage = props => {
-  const { page } = props.data.wpgraphql
+  const page = props.data.wpPage
   const title = page.title
 
   const formText = getContactText(props)
@@ -483,34 +483,32 @@ export const pageQuery = graphql`
         postPrefix
       }
     }
-    wpgraphql {
-      page(id: "/contact", idType: URI) {
-        id
-        title
-        content
-        custom_page_layouts {
-          additionalLayout {
-            additionalValuesValue
-            fieldGroupName
-            keyValue
-          }
-        }
-        custom_content {
-          headline
+    wpPage(uri: { eq: "/contact/" }) {
+      id
+      title
+      content
+      custom_content {
+        headline
+      }
+      custom_page_layouts {
+        additionalLayout {
+          fieldGroupName
+          keyValue
+          additionalValuesValue
         }
       }
     }
-    allWordpressWpBlackrockSection(
-      filter: { slug: { in: ["contact-information"] } }
-    ) {
+    allWpBlackrockSection(filter: { slug: { in: ["contact-information"] } }) {
       edges {
         node {
           id
           slug
-          acf {
-            custom_content {
-              content_name
-              content_value
+          blackrock_sections {
+            fieldGroupName
+            customContent {
+              contentName
+              fieldGroupName
+              contentValue
             }
             content
             headline

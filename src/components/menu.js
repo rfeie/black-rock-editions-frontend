@@ -134,27 +134,24 @@ const MENU_QUERY = graphql`
         siteUrl
       }
     }
-    wpgraphql {
-      menus(where: { location: EXPANDED }) {
-        edges {
-          node {
-            id
-            menuId
-            name
-            slug
-            menuItems {
-              edges {
-                node {
-                  id
-                  title
-                  target
-                  menuItemId
-                  label
-                  url
-                }
-              }
+    allWpMenu(filter: { locations: { eq: EXPANDED } }) {
+      edges {
+        node {
+          id
+          name
+          slug
+          menuItems {
+            nodes {
+              id
+              title
+              target
+              label
+              url
+              databaseId
+              linkRelationship
             }
           }
+          databaseId
         }
       }
     }
@@ -169,24 +166,21 @@ const Menu = () => {
     <StaticQuery
       query={MENU_QUERY}
       render={data => {
-        const menu = get(data, "wpgraphql.menus.edges[0].node")
+        const menu = get(data, "allWpMenu.edges[0].node")
         if (menu) {
-          const menuItems = get(menu, "menuItems.edges", []).map(
-            ({ node }) => node
-          )
+          const menuItems = get(menu, "menuItems.nodes", [])
           const wordPressUrl = data.site.siteMetadata.siteUrl
 
           const [open, setOpen] = useState(false)
-          console.log("ffff", open)
+
           return (
             <MenuWrapper>
               <Hamburger opened={open} onClick={setOpen} />
               <div className={`menu-items ${open ? "opened" : "closed"}`}>
                 {menuItems &&
                   menuItems.map(menuItem => (
-                    <Item>
+                    <Item key={getKey()}>
                       <MenuItem
-                        key={getKey()}
                         menuItem={menuItem}
                         wordPressUrl={wordPressUrl}
                       />

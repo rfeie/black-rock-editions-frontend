@@ -2,6 +2,7 @@ import React from "react"
 import { StaticQuery, graphql } from "gatsby"
 import styled from "styled-components"
 import get from "lodash/get"
+import { getKey } from "../utils"
 
 const FooterWrapper = styled.footer`
   background: black;
@@ -50,17 +51,19 @@ const ContactAndSocial = styled.section`
 
 const CONTACT_QUERY = graphql`
   query footerContactQuery {
-    allWordpressWpBlackrockSection(
+    allWpBlackrockSection(
       filter: { slug: { in: ["contact-information", "social-information"] } }
     ) {
       edges {
         node {
           id
           slug
-          acf {
-            custom_content {
-              content_name
-              content_value
+          blackrock_sections {
+            fieldGroupName
+            customContent {
+              contentName
+              fieldGroupName
+              contentValue
             }
             content
             headline
@@ -98,19 +101,19 @@ const ContactInfo = ({ node }) => {
   if (!node) return null
 
   const {
-    acf: { headline, content, custom_content = [] },
+    blackrock_sections: { headline, content, customContent = [] },
   } = node
   return (
     <section key={node.id}>
       <FooterContactHeadline text={headline} />
       <section>
-        {custom_content
-          .filter(content => content && content.content_value)
-          .map(({ content_name, content_value }) => {
+        {customContent
+          .filter(content => content && content.contentValue)
+          .map(({ contentName, contentValue }) => {
             return (
-              <div>
+              <div key={getKey()}>
                 {/* <ContactEmphasis>{content_name}:</ContactEmphasis> */}
-                <ContactPassive>{content_value}</ContactPassive>
+                <ContactPassive>{contentValue}</ContactPassive>
               </div>
             )
           })}
@@ -123,19 +126,19 @@ const ContactInfo = ({ node }) => {
 const SocialInfo = ({ node }) => {
   if (!node) return null
   const {
-    acf: { headline, content, custom_content = [] },
+    blackrock_sections: { headline, content, customContent = [] },
   } = node
   return (
     <section key={node.id}>
       <FooterContactHeadline text={headline} />
       <section>
-        {custom_content
-          .filter(content => content && content.content_value)
-          .map(({ content_name, content_value }) => {
+        {customContent
+          .filter(content => content && content.contentValue)
+          .map(({ contentName, contentValue }) => {
             return (
-              <ContactEmphasis>
-                <a href={content_value} target="_blank">
-                  {content_name}
+              <ContactEmphasis key={getKey()}>
+                <a href={contentValue} target="_blank">
+                  {contentName}
                 </a>
               </ContactEmphasis>
             )
@@ -153,11 +156,7 @@ const Footer = () => {
           query={CONTACT_QUERY}
           render={data => {
             {
-              const edges = get(
-                data,
-                "allWordpressWpBlackrockSection.edges",
-                []
-              )
+              const edges = get(data, "allWpBlackrockSection.edges", [])
               const social = edges.find(
                 ({ node }) => node.slug === "social-information"
               )
@@ -167,14 +166,20 @@ const Footer = () => {
               console.log("data, data", data)
               return (
                 <ContactAndSocial>
-                  <ContactInfo node={contact ? contact.node : null} />
-                  <SocialInfo node={social ? social.node : null} />
+                  <ContactInfo
+                    key={"contact-information"}
+                    node={contact ? contact.node : null}
+                  />
+                  <SocialInfo
+                    key={"social-information"}
+                    node={social ? social.node : null}
+                  />
                 </ContactAndSocial>
               )
             }
           }}
         />
-        <Copyright>©2020 Black Rock Editions</Copyright>
+        <Copyright>©{new Date().getFullYear()} Black Rock Editions</Copyright>
       </FooterContent>
     </FooterWrapper>
   )

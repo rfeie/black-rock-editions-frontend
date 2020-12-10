@@ -18,25 +18,33 @@ module.exports = async ({ actions, graphql }) => {
             pagePrefix
           }
         }
-        allWordpressPage {
+        allWpPage {
           edges {
             node {
               id
               slug
-              fields {
-                deploy
-              }
+              status
               link
-              acf {
-                associated_layout
+              custom_page_layouts {
+                associatedLayout
                 enable
               }
             }
           }
         }
-        wpgraphql {
-          allSettings {
-            generalSettingsUrl
+        site {
+          id
+          siteMetadata {
+            title
+            description
+          }
+        }
+
+        allWp {
+          nodes {
+            allSettings {
+              generalSettingsUrl
+            }
           }
         }
       }
@@ -47,27 +55,20 @@ module.exports = async ({ actions, graphql }) => {
     }
 
     const { pagePrefix } = result.data.site.siteMetadata
-    const { edges } = result.data.allWordpressPage
-    const { generalSettingsUrl } = result.data.wpgraphql.allSettings
+    const { edges } = result.data.allWpPage
+    const { generalSettingsUrl } = result.data.allWp.nodes[0].allSettings
     // use url?
     edges.forEach(edge => {
       // console.log("edge\n\nn\n\n\n\n\n\nn", edge)
       let component = postTemplate
-      if (edge.node.fields.deploy) {
-        const { enable, associated_layout = {} } = get(edge, "node.acf") || {}
+      if (edge.node.status === "publish") {
+        const { enable, associatedLayout = {} } =
+          get(edge, "node.custom_page_layouts") || {}
         const link = edge.node.link.replace(generalSettingsUrl, "")
-        console.log(
-          "edge\n\nn\n\n\n\n\n\nn",
-          edge,
-          get(edge, "node.acf"),
-          !!enable,
-          associatedLayouts[associated_layout]
-            ? associatedLayouts[associated_layout]
-            : component
-        )
+
         if (!!enable) {
-          component = associatedLayouts[associated_layout]
-            ? associatedLayouts[associated_layout]
+          component = associatedLayouts[associatedLayout]
+            ? associatedLayouts[associatedLayout]
             : component
         }
         createPage({

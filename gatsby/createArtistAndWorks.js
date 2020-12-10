@@ -1,13 +1,14 @@
 const path = require(`path`)
 const get = require("lodash/get")
+
 const mapWorks = obj => {
-  const artists = get(obj, "allWordpressWpArtist.edges", [])
-  const works = get(obj, "allWordpressWpWork.edges", [])
+  const artists = get(obj, "allWpArtist.edges", [])
+  const works = get(obj, "allWpWork.edges", [])
   return works.reduce((acc, work) => {
-    const workId = work.node.wordpress_id
+    const workId = work.node.databaseId
     const artist = artists.find(artist => {
-      return get(artist, "node.acf.associated_works", []).find(
-        ac => get(ac, "wordpress_id", null) === workId
+      return get(artist, "node.artist_works.associated_works", []).find(
+        ac => get(ac, "databaseId", null) === workId
       )
     })
 
@@ -30,36 +31,34 @@ module.exports = async ({ actions, graphql }) => {
   return graphql(
     `
       {
-        allWordpressWpArtist {
+        allWpArtist {
           edges {
             node {
               id
               slug
-              path
               title
-              type
-              fields {
-                deploy
-              }
-
-              wordpress_id
-              acf {
-                associated_works {
-                  wordpress_id
+              status
+              databaseId
+              uri
+              artist_works {
+                associatedWorks {
+                  ... on WpWork {
+                    id
+                    databaseId
+                  }
                 }
               }
             }
           }
         }
-        allWordpressWpWork {
+        allWpWork {
           edges {
             node {
-              wordpress_id
+              databaseId
+              id
               slug
-              path
-              fields {
-                deploy
-              }
+              status
+              uri
             }
           }
         }
@@ -74,30 +73,32 @@ module.exports = async ({ actions, graphql }) => {
       throw result.errors
     }
 
-    const { edges } = result.data.allWordpressWpArtist
+    const { edges } = result.data.allWpArtist
 
     edges.forEach(async edge => {
-      if (edge.node.fields.deploy) {
-        console.log("\n\n\n\nEDGE artist, ", {
-          path: `${edge.node.path}`,
-          component: artistTemplate,
-          context: {
-            id: edge.node.wordpress_id,
-            works: get(edge, "node.acf.associated_works", []).map(
-              ({ wordpress_id }) => wordpress_id
+      if (edge.node.status === "publish") {
+        const context = JSON.parse(
+          JSON.stringify({
+            id: edge.node.databaseId,
+            works: (get(edge, "node.artist_works.associatedWorks") || []).map(
+              ({ id }) => id
             ),
-          },
-        })
+          })
+        )
 
-        createPage({
-          path: `${edge.node.path}`,
-          component: artistTemplate,
-          context: {
-            id: edge.node.wordpress_id,
-            works: get(edge, "node.acf.associated_works", []).map(
-              ({ wordpress_id }) => wordpress_id
-            ),
+        console.log(
+          "ARTIST AND WORKS \n\n\n\n\n",
+          {
+            path: `${edge.node.uri}`,
+            component: artistTemplate,
+            context,
           },
+          "\n\n\n\n"
+        )
+        createPage({
+          path: `${edge.node.uri}`,
+          component: artistTemplate,
+          context,
         })
       }
     })
@@ -109,13 +110,13 @@ module.exports = async ({ actions, graphql }) => {
       //     edge.node.acf.artist[0].wordpress_id,
       //   JSON.stringify(edge, null, 2)
       // )
-      if (work.fields.deploy) {
+      if (edge.node.status === "publish") {
         createPage({
-          path: `${work.path}`,
+          path: `${work.uri}`,
           component: workTemplate,
           context: {
-            id: work.wordpress_id,
-            artistId: artist.wordpress_id,
+            id: work.databaseId,
+            artistId: artist.databaseId,
           },
         })
       }

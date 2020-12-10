@@ -107,11 +107,12 @@ const WordpressContent = styled.section`
 `
 
 const PageTemplate = props => {
-  const post = props.data.wordpressWpArtist
-  const works = props.data.allWordpressWpWork.edges
+  const post = props.data.wpArtist
+  const works = props.data.allWpWork.edges
   const content = post.content
-  const featuredImage = post.featured_media ? post.featured_media : null
+  const featuredImage = post.featuredImage ? post.featuredImage.node : null
   const siteTitle = props.data.site.siteMetadata.title
+  console.log("on aritsts ", props.data)
   return (
     <Theme>
       <Layout location={props.location} title={siteTitle}>
@@ -125,7 +126,13 @@ const PageTemplate = props => {
 
           <WorksContainer>
             {works.map(work => {
-              const { dimensions, edition, image, medium, year } = work.node.acf
+              const {
+                dimensions,
+                edition,
+                image,
+                medium,
+                year,
+              } = work.node.work_information
               const { path, id } = work.node
               console.log("work", image)
               return (
@@ -156,7 +163,7 @@ const PageTemplate = props => {
 export default PageTemplate
 
 export const pageQuery = graphql`
-  query ArtistByID($id: Int!, $works: [Int]) {
+  query ArtistByID($id: Int!, $works: [String]) {
     site {
       siteMetadata {
         title
@@ -164,30 +171,33 @@ export const pageQuery = graphql`
       }
     }
 
-    wordpressWpArtist(wordpress_id: { eq: $id }) {
+    wpArtist(databaseId: { eq: $id }) {
       id
-
       content
       title
-      featured_media {
-        localFile {
-          childImageSharp {
-            fluid(maxWidth: 1400) {
-              ...GatsbyImageSharpFluid_withWebp
+      featuredImage {
+        node {
+          localFile {
+            childImageSharp {
+              fluid(maxWidth: 1400) {
+                ...GatsbyImageSharpFluid_withWebp
+              }
             }
           }
         }
       }
     }
-    allWordpressWpWork(filter: { wordpress_id: { in: $works } }) {
+    allWpWork(filter: { id: { in: $works } }) {
       edges {
         node {
           id
-          path
-          acf {
+          uri
+          work_information {
             dimensions
             edition
-
+            fieldGroupName
+            medium
+            year
             image {
               localFile {
                 childImageSharp {
@@ -197,8 +207,6 @@ export const pageQuery = graphql`
                 }
               }
             }
-            medium
-            year
           }
         }
       }

@@ -2,6 +2,7 @@ import React from "react"
 import { graphql, Link } from "gatsby"
 import get from "lodash/get"
 import Img from "gatsby-image"
+import FeaturedImage from "../components/FeaturedImage"
 import Theme from "../components/Theme"
 import Layout from "../components/layout"
 import SEO from "../components/seo"
@@ -109,38 +110,27 @@ const ArtistSection = styled.section`
   }
 `
 
-const FeaturedImage = ({ src }) => {
-  return (
-    <section>
-      <img src={src} />
-    </section>
-  )
-}
 const PageTemplate = props => {
-  const post = props.data.wordpressPage
-  const featuredImage = post.featured_media
-    ? post.featured_media.source_url
-    : null
+  const post = props.data.wpPage
+  const featuredImage = post.featuredImage ? post.featuredImage.node : null
   const siteTitle = props.data.site.siteMetadata.title
 
-  const artists = get(props, "data.allWordpressWpArtist.edges", []).map(
-    ({ node }) => {
-      const {
-        acf: { preview_image, preview_text },
-        path,
-        id,
-        title,
-      } = node
-      const { title: workTitle, alt_text, source_url } = preview_image || {}
-      return {
-        path,
-        title,
-        id,
-        image: preview_image,
-        excerpt: preview_text,
-      }
+  const artists = get(props, "data.allWpArtist.edges", []).map(({ node }) => {
+    const {
+      artist_works: { previewText, previewImage },
+      uri,
+      id,
+      title,
+    } = node
+    const { title: workTitle, alt_text, source_url } = previewImage || {}
+    return {
+      uri,
+      title,
+      id,
+      image: previewImage,
+      excerpt: previewText,
     }
-  )
+  })
   return (
     <Theme>
       <Layout location={props.location} title={siteTitle}>
@@ -152,7 +142,7 @@ const PageTemplate = props => {
           <section dangerouslySetInnerHTML={{ __html: post.content }}></section>
           <AllArtistSection>
             {artists.map(artist => {
-              const { path, title, image, excerpt, id } = artist
+              const { uri, title, image, excerpt, id } = artist
               return (
                 <ArtistSection
                   key={id}
@@ -161,7 +151,7 @@ const PageTemplate = props => {
                     .join("_")}
                 >
                   <div>
-                    <Link to={path}>
+                    <Link to={uri}>
                       <ArtistName>{title}</ArtistName>
                     </Link>
 
@@ -170,7 +160,7 @@ const PageTemplate = props => {
 
                   {image ? (
                     <div className="image-section">
-                      <Link to={path}>
+                      <Link to={uri}>
                         <Img fluid={image.localFile.childImageSharp.fluid} />
                       </Link>
                     </div>
@@ -195,31 +185,35 @@ export const pageQuery = graphql`
         author
       }
     }
-    wordpressPage(id: { eq: $id }) {
+    wpPage(id: { eq: $id }) {
       slug
       title
       id
-      featured_media {
-        source_url
+      featuredImage {
+        node {
+          localFile {
+            childImageSharp {
+              fluid(maxWidth: 1400) {
+                ...GatsbyImageSharpFluid_withWebp
+              }
+            }
+          }
+        }
       }
       content
     }
-    allWordpressWpArtist(sort: { fields: menu_order, order: ASC }) {
+    allWpArtist(sort: { fields: menuOrder, order: ASC }) {
       edges {
         node {
           id
           slug
-          path
+          uri
           title
-          type
-
-          fields {
-            deploy
-          }
-          acf {
-            preview_text
-
-            preview_image {
+          status
+          databaseId
+          artist_works {
+            previewText
+            previewImage {
               localFile {
                 childImageSharp {
                   fluid(maxWidth: 1400) {
@@ -229,7 +223,6 @@ export const pageQuery = graphql`
               }
             }
           }
-          wordpress_id
         }
       }
     }

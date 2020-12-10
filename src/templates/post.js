@@ -60,13 +60,9 @@ const LinkWrapper = styled.div`
   }
 `
 const PostTemplate = props => {
-  const post = props.data.wordpressPost
+  const post = props.data.wpPost
   const siteTitle = props.data.site.siteMetadata.title
-  let featuredImage = false
-
-  if (post.featured_media && post.featured_media) {
-    featuredImage = post.featured_media
-  }
+  const featuredImage = post.featuredImage ? post.featuredImage.node : null
 
   return (
     <Theme>
@@ -83,14 +79,16 @@ const PostTemplate = props => {
             }}
           >
             <PostDate className="post-date">{post.date}</PostDate>
-            <LinkWrapper>
-              <Link
-                className="cat-link"
-                to={`/category/${post.categories[0].slug}`}
-              >
-                Back to {post.categories[0].name}
-              </Link>
-            </LinkWrapper>
+            {post.categories.nodes[0] ? (
+              <LinkWrapper>
+                <Link
+                  className="cat-link"
+                  to={`/category/${post.categories.nodes[0].slug}`}
+                >
+                  Back to {post.categories.nodes[0].name}
+                </Link>
+              </LinkWrapper>
+            ) : null}
           </div>
           <Divider />
           <div dangerouslySetInnerHTML={{ __html: post.content }} />
@@ -110,17 +108,31 @@ export const pageQuery = graphql`
         author
       }
     }
-    wordpressPost(id: { eq: $id }) {
+    wpPost(id: { eq: $id }) {
       date(formatString: "MMMM DD, YYYY")
       slug
       title
       modified
       excerpt
       id
+      featuredImage {
+        node {
+          localFile {
+            childImageSharp {
+              fluid(maxWidth: 1400) {
+                ...GatsbyImageSharpFluid_withWebp
+              }
+            }
+          }
+        }
+      }
 
       categories {
-        name
-        slug
+        nodes {
+          name
+          id
+          slug
+        }
       }
       content
     }

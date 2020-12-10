@@ -1,6 +1,7 @@
 import React, { useState } from "react"
 import { graphql, Link, navigate } from "gatsby"
 import Img from "gatsby-image"
+import FeaturedImage from "../components/FeaturedImage"
 
 import Theme from "../components/Theme"
 import Layout from "../components/layout"
@@ -85,23 +86,16 @@ const ContactButton = styled.button`
   font-weight: 800;
   letter-spacing: 1px;
 `
-const FeaturedImage = ({ src }) => {
-  return (
-    <section>
-      <img src={src} />
-    </section>
-  )
-}
+
 const PageTemplate = props => {
-  const work = props.data.wordpressWpWork
-  const artist = props.data.wordpressWpArtist
-  const featuredImage = work.featured_media
-    ? work.featured_media.source_url
-    : null
+  const work = props.data.wpWork
+  const artist = props.data.wpArtist
+  const featuredImage = work.featuredImage ? work.featuredImage : null
+
   const siteTitle = props.data.site.siteMetadata.title
   const {
     title,
-    acf: { dimensions, edition, image, medium, year },
+    work_information: { dimensions, edition, image, medium, year },
   } = work
 
   console.log("image", props.data)
@@ -113,7 +107,7 @@ const PageTemplate = props => {
           {featuredImage ? <FeaturedImage src={featuredImage} /> : null}
           <Work>
             <ArtistName>
-              <Link to={artist.path}>{artist.title}</Link>
+              <Link to={artist.uri}>{artist.title}</Link>
             </ArtistName>
             <PageTitle>{title}</PageTitle>
             <section className="work-year">{year}</section>
@@ -138,8 +132,7 @@ const PageTemplate = props => {
             ></section>
           </Work>
           <WorksImageWrapper>
-            {/* <img src={image[0]} /> */}
-            <Img fluid={work.acf.image.localFile.childImageSharp.fluid} />
+            <Img fluid={image.localFile.childImageSharp.fluid} />
           </WorksImageWrapper>
         </ContentWrapper>
       </Layout>
@@ -158,19 +151,28 @@ export const pageQuery = graphql`
       }
     }
 
-    wordpressWpArtist(wordpress_id: { eq: $artistId }) {
+    wpArtist(databaseId: { eq: $artistId }) {
       id
       content
-      path
+      uri
       title
-      #    featured_media {
-      #       source_url
-      #      }
     }
-    wordpressWpWork(wordpress_id: { eq: $id }) {
+    wpWork(databaseId: { eq: $id }) {
       id
       title
-      acf {
+      featuredImage {
+        node {
+          localFile {
+            childImageSharp {
+              fluid(maxWidth: 1400) {
+                ...GatsbyImageSharpFluid_withWebp
+              }
+            }
+          }
+        }
+      }
+
+      work_information {
         dimensions
         edition
 
@@ -178,7 +180,7 @@ export const pageQuery = graphql`
           localFile {
             childImageSharp {
               fluid(maxWidth: 1400) {
-                ...GatsbyImageSharpFluid_withWebp
+                src
               }
             }
           }

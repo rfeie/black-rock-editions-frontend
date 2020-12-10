@@ -23,6 +23,7 @@ const MenuItem = ({ menuItem, wordPressUrl }) => {
   const localUrl = isLocal(url, wordPressUrl)
   const formattedUrl = localUrl ? CreateLocalLink(menuItem, wordPressUrl) : url
   const Wrapper = localUrl ? MenuItemLink : MenuItemAnchor
+  console.log("MenuItem", wordPressUrl, menuItem, localUrl, formattedUrl)
   const args = localUrl
     ? {
         to: formattedUrl,

@@ -55,7 +55,7 @@ const PostTitle = styled.h3`
 
 const CategoryTemplate = props => {
   const { title, postPrefix } = props.data.site.siteMetadata
-  const posts = props.data.allWordpressPost.edges
+  const posts = props.data.allWpPost.edges
   // test
   return (
     <Theme>
@@ -109,8 +109,8 @@ export const pageQuery = graphql`
         postPrefix
       }
     }
-    allWordpressPost(
-      filter: { categories: { elemMatch: { slug: { eq: $slug } } } }
+    allWpPost(
+      filter: { categories: { nodes: { elemMatch: { slug: { eq: $slug } } } } }
     ) {
       edges {
         node {
@@ -121,9 +121,11 @@ export const pageQuery = graphql`
           excerpt
           id
           categories {
-            name
-            id
-            slug
+            nodes {
+              name
+              id
+              slug
+            }
           }
           content
         }
