@@ -7,7 +7,7 @@
  */
 
 export const isLocal = (url, rootUrl) => {
-  return url.indexOf(rootUrl) !== -1 && url.indexOf("http") !== -1
+  return url.indexOf("http") === -1 || url.indexOf(rootUrl) !== -1
 }
 export const CreateLocalLink = (menuItem, wordPressUrl, blogURI = "blog/") => {
   const { url, connectedObject } = menuItem

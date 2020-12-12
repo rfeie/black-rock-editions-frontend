@@ -27,12 +27,12 @@ const LogoWrapper = styled.section`
   justify-content: space-between;
   svg {
     height: 100%;
+    width: max-content;
   }
 `
 const HeaderContent = styled.header`
   ${sharedStyles}
   background: black;
-  mix-blend-mode: multiply;
 `
 
 const HeaderBkg = styled.div`

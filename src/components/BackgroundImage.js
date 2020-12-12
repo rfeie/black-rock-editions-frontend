@@ -24,7 +24,7 @@ const Panel = styled.div`
 //     black 25%,
 //     black
 //   );
-    background: black;
+    // background: black;
 `
 
 const BkgImg = styled.section`

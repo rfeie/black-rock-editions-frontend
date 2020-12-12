@@ -1,4 +1,3 @@
-
 const _ = require(`lodash`)
 const path = require(`path`)
 
@@ -6,33 +5,31 @@ const path = require(`path`)
  * Create WordPress Category Pages
  */
 module.exports = async ({ actions, graphql }) => {
-
   const { createPage } = actions
   const categoriesTemplate = path.resolve(`./src/templates/category.js`)
 
   return graphql(
     `
-    {
-      allWordpressCategory {
-        edges {
-          node {
-            id
-            link
-            path
-            name
-            count
-            slug
+      {
+        allWpCategory {
+          edges {
+            node {
+              id
+              link
+              name
+              count
+              slug
+            }
           }
         }
       }
-    }
-  `
+    `
   ).then(result => {
     if (result.errors) {
       throw result.errors
     }
 
-    const categories = result.data.allWordpressCategory.edges;
+    const categories = result.data.allWpCategory.edges
     categories.forEach(cat => {
       createPage({
         path: `/category/${cat.node.slug}/`,
@@ -40,7 +37,7 @@ module.exports = async ({ actions, graphql }) => {
         context: {
           slug: cat.node.slug,
           name: cat.node.name,
-        }
+        },
       })
     })
 

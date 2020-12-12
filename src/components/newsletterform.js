@@ -1,7 +1,7 @@
 import React, { useState } from "react"
 import styled from "styled-components"
 
-const SignupButton = styled.button`
+export const SignupButton = styled.button`
   padding-left: 1.25rem;
   padding-right: 1.25rem;
   padding-top: 0.75rem;

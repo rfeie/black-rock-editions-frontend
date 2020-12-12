@@ -15,18 +15,18 @@ module.exports = async ({ actions, graphql }) => {
             postPrefix
           }
         }
-        allWordpressPost {
+        allWpPost {
           edges {
             node {
               id
               slug
               modified
               categories {
-                name
+                nodes {
+                  name
+                }
               }
-              fields {
-                deploy
-              }
+              status
             }
           }
         }
@@ -38,11 +38,11 @@ module.exports = async ({ actions, graphql }) => {
     }
 
     const { postPrefix } = result.data.site.siteMetadata
-    const { edges } = result.data.allWordpressPost
+    const { edges } = result.data.allWpPost
 
     edges.forEach(edge => {
-      if (edge.node.fields.deploy) {
-        console.log("\n\n\n\nEDGE post, ", JSON.stringify(edge, null, 2))
+      if (edge.node.status === "publish") {
+        // console.log("\n\n\n\nEDGE post, ", JSON.stringify(edge, null, 2))
 
         createPage({
           path: `${postPrefix}/${edge.node.slug}`,

@@ -3,7 +3,7 @@ module.exports = {
     title: "Black Rock Editions",
     author: `Black Rock Editions`,
     description: `The website for the art printing company Black Rock Editions`,
-    siteUrl: `https://gatsby-wordpress-netlify-production.netlify.com`,
+    siteUrl: `http://blackrockeditions.tech/`,
     social: {
       twitter: `blackrockeditions`,
     },
@@ -18,6 +18,8 @@ module.exports = {
         name: `assets`,
       },
     },
+    `gatsby-plugin-react-leaflet`,
+
     {
       resolve: "gatsby-source-graphql",
       options: {
@@ -29,26 +31,41 @@ module.exports = {
         url: "http://blackrockeditions.tech/graphql",
       },
     },
+    // {
+    //   resolve: "gatsby-source-wordpress",
+    //   options: {
+    //     // The base url to your WP site.
+    //     baseUrl: "blackrockeditions.tech",
+    //     // baseUrl: 'data.justinwhall.com',
+    //     // baseUrl: 'wpgatsby.wtf',
+    //     // WP.com sites set to true, WP.org set to false
+    //     hostingWPCOM: false,
+    //     // The protocol. This can be http or https.
+    //     protocol: "http",
+    //     // Use 'Advanced Custom Fields' Wordpress plugin
+    //     useACF: true,
+    //     auth: {},
+    //     // Set to true to debug endpoints on 'gatsby build'
+    //     verboseOutput: true,
+    //     excludedRoutes: ["/*/*/comments", "/yoast/**", "/oembed/*"],
+    //     normalizer({ entities }) {
+    //       return entities
+    //     },
+    //   },
+    // },
     {
-      resolve: "gatsby-source-wordpress",
+      /**
+       * First up is the WordPress source plugin that connects Gatsby
+       * to your WordPress site.
+       *
+       * visit the plugin docs to learn more
+       * https://github.com/gatsbyjs/gatsby-source-wordpress-experimental/blob/master/README.md
+       *
+       */
+      resolve: `gatsby-source-wordpress-experimental`,
       options: {
-        // The base url to your WP site.
-        baseUrl: "blackrockeditions.tech",
-        // baseUrl: 'data.justinwhall.com',
-        // baseUrl: 'wpgatsby.wtf',
-        // WP.com sites set to true, WP.org set to false
-        hostingWPCOM: false,
-        // The protocol. This can be http or https.
-        protocol: "http",
-        // Use 'Advanced Custom Fields' Wordpress plugin
-        useACF: false,
-        auth: {},
-        // Set to true to debug endpoints on 'gatsby build'
-        verboseOutput: true,
-        excludedRoutes: ["/*/*/comments", "/yoast/**", "/oembed/*"],
-        normalizer({ entities }) {
-          return entities
-        },
+        // the only required plugin option for WordPress is the GraphQL url.
+        url: "http://blackrockeditions.tech/graphql",
       },
     },
     {
@@ -59,8 +76,8 @@ module.exports = {
       resolve: "gatsby-plugin-web-font-loader",
       options: {
         custom: {
-          families: ["Inter"],
-          urls: ["/fonts/inter.css"],
+          families: ["Inter", "EB Garamond"],
+          urls: ["/fonts/inter.css", "/fonts/garamond.css"],
         },
       },
     },

@@ -1,0 +1,81 @@
+/* font-family: 'EB Garamond', serif;
+ 
+ <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;0,700;0,800;1,500;1,600;1,700;1,800&display=swap" rel="stylesheet">
+
+ */
+
+@font-face {
+  /* regular */
+  font-family: "EB Garamond";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("EBGaramond-Regular.ttf") format("ttf");
+}
+@font-face {
+  font-family: "EB Garamond";
+  font-style: italic;
+  font-weight: 400;
+  font-display: swap;
+  src: url("EBGaramond-Italic.ttf") format("ttf");
+}
+@font-face {
+  /* medium */
+  font-family: "EB Garamond";
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url("EBGaramond-Medium.ttf") format("ttf");
+}
+@font-face {
+  font-family: "EB Garamond";
+  font-style: italic;
+  font-weight: 500;
+  font-display: swap;
+  src: url("EBGaramond-MediumItalic.ttf") format("ttf");
+}
+@font-face {
+  /* semibold */
+  font-family: "EB Garamond";
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url("EBGaramond-SemiBold.ttf") format("ttf");
+}
+@font-face {
+  font-family: "EB Garamond";
+  font-style: italic;
+  font-weight: 600;
+  font-display: swap;
+  src: url("EBGaramond-SemiBoldItalic.ttf") format("ttf");
+}
+@font-face {
+  /* bold */
+  font-family: "EB Garamond";
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url("EBGaramond-Bold.ttf") format("ttf");
+}
+@font-face {
+  font-family: "EB Garamond";
+  font-style: italic;
+  font-weight: 700;
+  font-display: swap;
+  src: url("EBGaramond-BoldItalic.ttf") format("ttf");
+}
+@font-face {
+  /* extrabold */
+  font-family: "EB Garamond";
+  font-style: normal;
+  font-weight: 800;
+  font-display: swap;
+  src: url("EBGaramond-ExtraBold.ttf") format("ttf");
+}
+@font-face {
+  font-family: "EB Garamond";
+  font-style: italic;
+  font-weight: 800;
+  font-display: swap;
+  src: url("EBGaramond-ExtraBoldItalic.ttf") format("ttf");
+}

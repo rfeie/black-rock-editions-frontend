@@ -1,5 +1,5 @@
 import React from "react"
-import { Link, graphql } from "gatsby"
+import { Link, graphql, useStaticQuery } from "gatsby"
 import get from "lodash/get"
 import Layout from "../components/layout"
 import SEO from "../components/seo"
@@ -7,6 +7,8 @@ import Theme from "../components/Theme"
 import { rhythm } from "../utils/typography"
 import styled from "styled-components"
 import NewsletterSection from "../components/newslettersection"
+import BackgroundImage from "../components/BackgroundImage"
+
 const sharedContentStyles = `
   display: grid;
   grid-template-areas: "header ." ". copy";
@@ -72,33 +74,38 @@ const HeroText = styled.section`
   }
 `
 const getNewsletterInfo = props => {
-  const prefix = "data.allWordpressAcfBlackrockSection.edges[0].node"
+  const prefix = "data.allWpBlackrockSection.edges[0].node"
   return {
-    headline: get(props, `${prefix}.acf.headline`),
-    sections: get(props, `${prefix}.acf.custom_content`, []).reduce(
-      (acc, curr) => {
-        const { content_name, content_value } = curr
-        acc[content_name] = content_value
-        return acc
-      },
-      {}
-    ),
-    content: get(props, `${prefix}.acf.content`),
+    headline: get(props, `${prefix}.blackrock_sections.headline`),
+    sections: get(
+      props,
+      `${prefix}.blackrock_sections.customContent`,
+      []
+    ).reduce((acc, curr) => {
+      const { contentName, contentValue } = curr
+      acc[contentName] = contentValue
+      return acc
+    }, {}),
+    content: get(props, `${prefix}.blackrock_sections.content`),
   }
 }
 const getPageInfo = props => {
   return {
-    headline: get(props, "data.wordpressPage.acf.headline"),
-    content: get(props, "data.wordpressPage.content"),
+    headline: get(props, "data.wpPage.custom_content.headline"),
+    content: get(props, "data.wpPage.content"),
   }
 }
 
 const BlogIndex = props => {
   const { title, postPrefix } = props.data.site.siteMetadata
   const { headline, content } = getPageInfo(props)
+  const result = get(props.data, "file.childImageSharp.fluid.src")
+
   return (
     <Theme>
       <Layout location={props.location} title={title}>
+        <BackgroundImage backgroundSrc={result} />
+
         <SEO title="All posts" />
         <HeroWrapper>
           <HeroContent>
@@ -122,41 +129,30 @@ export const pageQuery = graphql`
         postPrefix
       }
     }
-    wordpressPage(path: { eq: "/" }) {
+    wpPage(uri: { eq: "/" }) {
       id
-      acf {
+      content
+      custom_content {
         headline
       }
-      content
     }
-
-    allWordpressAcfBlackrockSection(
-      filter: { id: { eq: "d8ae8765-f350-5f5e-82d9-a0b025a2c58f" } }
-    ) {
+    allWpBlackrockSection(filter: { databaseId: { eq: 24 } }) {
       edges {
         node {
           id
-          wordpress_id
+          databaseId
           internal {
             type
           }
-          acf {
+          blackrock_sections {
             content
             headline
-            custom_content {
-              content_name
-              content_value
+            customContent {
+              contentName
+              contentValue
             }
           }
         }
-      }
-    }
-
-    wpgraphql {
-      page(idType: URI, id: "/home") {
-        id
-        uri
-        slug
       }
     }
   }
