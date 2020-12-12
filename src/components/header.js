@@ -27,6 +27,7 @@ const LogoWrapper = styled.section`
   justify-content: space-between;
   svg {
     height: 100%;
+    width: max-content;
   }
 `
 const HeaderContent = styled.header`

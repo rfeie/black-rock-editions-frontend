@@ -11,13 +11,16 @@ const MenuWrapper = styled.div`
   display: flex;
   align-items: center;
   // position: relative;
-
+  width: max-content;
+  width: 30px;
   .hamburger {
     overflow: hidden;
     cursor: pointer;
     transition: transform 400ms;
     user-select: none;
-  }
+    width: 100%;
+    height: -webkit-fill-available;
+    }
 
   .hamRotate.active {
     transform: rotate(45deg);
@@ -98,6 +101,7 @@ const MenuWrapper = styled.div`
 
 const HamburgerWrapper = styled.div`
   height: 110%;
+  width: max-content;
 `
 const Hamburger = ({ onClick, opened }) => {
   return (
