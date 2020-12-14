@@ -12,7 +12,7 @@ const ContentWrapper = styled.section`
   color: #f5f7fa;
   display: flex;
   justify-content: space-between;
-  min-height: calc(100vh - 150px);
+  min-height: calc(100vh - 211px);
   max-width: 70%;
   margin: 0 auto;
   margin-top: 2em;
@@ -98,7 +98,6 @@ const PageTemplate = props => {
     work_information: { dimensions, edition, image, medium, year },
   } = work
 
-  console.log("image", props.data)
   return (
     <Theme>
       <Layout location={props.location} title={siteTitle}>
@@ -117,7 +116,7 @@ const PageTemplate = props => {
             <ContactButton
               onClick={e => {
                 e.preventDefault()
-                navigate("contact", {
+                navigate("/contact", {
                   state: {
                     subjectText: `Interested in ${work.title}.`,
                     messageText: `I am interested in ${work.title} by ${artist.title} and would like to know more.`,
@@ -180,7 +179,7 @@ export const pageQuery = graphql`
           localFile {
             childImageSharp {
               fluid(maxWidth: 1400) {
-                src
+                ...GatsbyImageSharpFluid_withWebp
               }
             }
           }

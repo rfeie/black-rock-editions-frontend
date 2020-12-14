@@ -12,7 +12,6 @@ const MenuWrapper = styled.div`
   align-items: center;
   // position: relative;
   width: max-content;
-  width: 30px;
   .hamburger {
     overflow: hidden;
     cursor: pointer;
@@ -83,6 +82,7 @@ const MenuWrapper = styled.div`
       display: none;
     }
 
+    width: max-content;
     .menu-items {
       &.opened ,&.closed {
         position: relative;

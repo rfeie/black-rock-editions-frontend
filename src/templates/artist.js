@@ -19,7 +19,7 @@ const ContentWrapper = styled.section`
   justify-content: center;
   align-items: center;
   flex-direction: column;
-  min-height: calc(100vh - 150px);
+  min-height: calc(100vh - 211px);
   margin: 0 auto;
   margin-top: 2em;
   max-width: 90%;
@@ -133,12 +133,12 @@ const PageTemplate = props => {
                 medium,
                 year,
               } = work.node.work_information
-              const { path, id } = work.node
+              const { uri, id } = work.node
               console.log("work", image)
               return (
                 <Work key={id}>
                   <WorksImageWrapper>
-                    <Link to={path}>
+                    <Link to={uri}>
                       <Img fluid={image.localFile.childImageSharp.fluid} />
                     </Link>
                   </WorksImageWrapper>
@@ -148,7 +148,7 @@ const PageTemplate = props => {
                     <section className="work-year">
                       {year} | {medium} | {dimensions} | {edition}
                     </section>
-                    <Link to={path}>view work</Link>
+                    <Link to={uri}>view work</Link>
                   </section>
                 </Work>
               )
