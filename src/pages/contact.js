@@ -12,7 +12,7 @@ const INVALID = "invalid"
 const ContentWrapper = styled.section`
   position: relative;
   color: #f5f7fa;
-  min-height: calc(100vh - 150px);
+  min-height: calc(100vh - 211px);
   width: 100%;
   max-width: 70%;
   margin: 0 auto;

@@ -7,7 +7,7 @@ const mapWorks = obj => {
   return works.reduce((acc, work) => {
     const workId = work.node.databaseId
     const artist = artists.find(artist => {
-      return get(artist, "node.artist_works.associated_works", []).find(
+      return (get(artist, "node.artist_works.associatedWorks") || []).find(
         ac => get(ac, "databaseId", null) === workId
       )
     })
@@ -86,15 +86,15 @@ module.exports = async ({ actions, graphql }) => {
           })
         )
 
-        console.log(
-          "ARTIST AND WORKS \n\n\n\n\n",
-          {
-            path: `${edge.node.uri}`,
-            component: artistTemplate,
-            context,
-          },
-          "\n\n\n\n"
-        )
+        // console.log(
+        //   "ARTIST AND WORKS \n\n\n\n\n",
+        //   {
+        //     path: `${edge.node.uri}`,
+        //     component: artistTemplate,
+        //     context,
+        //   },
+        //   "\n\n\n\n"
+        // )
         createPage({
           path: `${edge.node.uri}`,
           component: artistTemplate,
@@ -105,12 +105,8 @@ module.exports = async ({ actions, graphql }) => {
     // ==== END Artists ====
     // ==== START Works  ====
     mapWorks(result.data).forEach(({ work, artist }) => {
-      // console.log(
-      //   "\n\n\n\nEDGE work, " + edge.node.fields.deploy &&
-      //     edge.node.acf.artist[0].wordpress_id,
-      //   JSON.stringify(edge, null, 2)
-      // )
-      if (edge.node.status === "publish") {
+      console.log("START Works", { work, artist })
+      if (work.status === "publish") {
         createPage({
           path: `${work.uri}`,
           component: workTemplate,

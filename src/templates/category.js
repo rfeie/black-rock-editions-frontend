@@ -9,7 +9,7 @@ import { rhythm } from "../utils/typography"
 const ContentWrapper = styled.section`
   position: relative;
   color: #f5f7fa;
-  min-height: calc(100vh - 150px);
+  min-height: calc(100vh - 211px);
   max-width: 70%;
   margin: 0 auto;
   margin-top: 2em;
