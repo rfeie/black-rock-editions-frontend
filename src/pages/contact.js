@@ -234,6 +234,7 @@ const Form = props => {
       method="post"
       data-netlify="true"
       data-netlify-honeypot="bot-field"
+      action="/signup-success"
       onSubmit={onSubmit}
     >
       <FormWrapper>
