@@ -246,7 +246,12 @@ const Form = props => {
         <FieldInputsArea>
           <FieldWrapper span="4">
             <InputWrapper>
-              <Input id="name" value={name} onChange={setFormState("name")} />
+              <Input
+                id="name"
+                name="name"
+                value={name}
+                onChange={setFormState("name")}
+              />
             </InputWrapper>
             <FormLabel htmlFor="name">{name_label}</FormLabel>
             <FormErrors errors={errors} fieldName="name" />
@@ -254,6 +259,7 @@ const Form = props => {
           <FieldWrapper span="4">
             <InputWrapper>
               <Input
+                name="email"
                 id="email"
                 placeholder="you@example.com"
                 value={email}
@@ -267,6 +273,7 @@ const Form = props => {
             <InputWrapper>
               <Input
                 id="subject"
+                name="subject"
                 placeholder={subject_placeholder}
                 value={subject}
                 onChange={setFormState("subject")}
@@ -279,6 +286,7 @@ const Form = props => {
             <InputWrapper>
               <TextArea
                 id="message"
+                name="message"
                 rows="4"
                 value={message}
                 onChange={setFormState("message")}
