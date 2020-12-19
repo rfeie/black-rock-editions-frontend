@@ -238,6 +238,7 @@ const Form = props => {
       onSubmit={onSubmit}
     >
       <FormWrapper>
+        <input type="hidden" name="form-name" value="contact-message" />
         <div>
           <HeadlineText>{headline}</HeadlineText>
           <SubheadText dangerouslySetInnerHTML={{ __html: content }} />

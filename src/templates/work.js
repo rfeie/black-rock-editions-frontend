@@ -83,6 +83,7 @@ const ContactButton = styled.button`
   margin-top: 0.75em;
   text-transform: uppercase;
   font-size: 0.75em;
+  cursor: pointer;
   font-weight: 800;
   letter-spacing: 1px;
 `
