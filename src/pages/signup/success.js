@@ -22,7 +22,7 @@ const SignupSuccessPage = props => {
     <Theme>
       <Layout location={props.location} title={siteTitle}>
         <ContentWrapper>
-          <h1>You Signed up!</h1>
+          <h1>All Done!</h1>
           <p>Talk to you soon.</p>
         </ContentWrapper>
       </Layout>
