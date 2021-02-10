@@ -104,7 +104,7 @@ const PageTemplate = props => {
       <Layout location={props.location} title={siteTitle}>
         <SEO title={work.title} description={work.excerpt} />
         <ContentWrapper>
-          {featuredImage ? <FeaturedImage src={featuredImage} /> : null}
+          {featuredImage ? <FeaturedImage src={featuredImage.node} /> : null}
           <Work>
             <ArtistName>
               <Link to={artist.uri}>{artist.title}</Link>
