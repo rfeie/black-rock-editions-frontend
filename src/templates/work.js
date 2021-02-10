@@ -92,6 +92,7 @@ const PageTemplate = props => {
   const work = props.data.wpWork
   const artist = props.data.wpArtist
   const featuredImage = work.featuredImage ? work.featuredImage.node : null
+  console.log('rgf\n\n\n\nfeaturedImage ', featuredImage,  work.featuredImage)
   const siteTitle = props.data.site.siteMetadata.title
   const {
     title,
