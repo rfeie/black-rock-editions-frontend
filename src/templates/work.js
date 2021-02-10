@@ -91,8 +91,7 @@ const ContactButton = styled.button`
 const PageTemplate = props => {
   const work = props.data.wpWork
   const artist = props.data.wpArtist
-  const featuredImage = work.featuredImage ? work.featuredImage : null
-
+  const featuredImage = post.featuredImage ? post.featuredImage.node : null
   const siteTitle = props.data.site.siteMetadata.title
   const {
     title,
@@ -104,7 +103,7 @@ const PageTemplate = props => {
       <Layout location={props.location} title={siteTitle}>
         <SEO title={work.title} description={work.excerpt} />
         <ContentWrapper>
-          {featuredImage ? <FeaturedImage src={featuredImage.node} /> : null}
+          {featuredImage ? <FeaturedImage src={featuredImage} /> : null}
           <Work>
             <ArtistName>
               <Link to={artist.uri}>{artist.title}</Link>
