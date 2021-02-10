@@ -91,7 +91,7 @@ const ContactButton = styled.button`
 const PageTemplate = props => {
   const work = props.data.wpWork
   const artist = props.data.wpArtist
-  const featuredImage = post.featuredImage ? post.featuredImage.node : null
+  const featuredImage = work.featuredImage ? work.featuredImage.node : null
   const siteTitle = props.data.site.siteMetadata.title
   const {
     title,
