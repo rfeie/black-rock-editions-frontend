@@ -453,6 +453,8 @@ const ContactPage = props => {
   })
 
   const onSubmit = e => {
+    // TODO: https://docs.netlify.com/forms/setup/#html-forms
+
     const validation = validateFormData(formState)
     if (validation.formStatus === INVALID) {
       e.preventDefault()
