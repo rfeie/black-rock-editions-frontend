@@ -3,7 +3,7 @@ import styled from "styled-components"
 
 const Wrapper = styled.div`
   .ham {
-    width: 100%;
+    width: 32px;
     cursor: pointer;
     -webkit-tap-highlight-color: transparent;
     transition: transform 400ms;
@@ -53,7 +53,8 @@ const Hamburger = ({ menuItem, wordPressUrl }) => {
       <svg
         className={`ham hamRotate ham8 ${active ? "active" : ""}`}
         viewBox="0 0 100 100"
-        width="80"
+        width="32px"
+        height="32px"
         onClick={() => setActive(!active)}
       >
         <path

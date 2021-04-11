@@ -17,7 +17,7 @@ const MenuWrapper = styled.div`
     cursor: pointer;
     transition: transform 400ms;
     user-select: none;
-    width: 100%;
+    width: 32px;
     height: -webkit-fill-available;
     }
 
@@ -109,7 +109,8 @@ const Hamburger = ({ onClick, opened }) => {
       <svg
         className={`hamburger hamRotate ${opened ? "active" : ""}`}
         viewBox="0 0 100 100"
-        width="80"
+        height="32"
+        width="32"
         onClick={e => onClick(!opened)}
       >
         <path
